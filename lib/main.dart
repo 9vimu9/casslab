@@ -1,23 +1,17 @@
+import 'dart:async';
 import 'package:camera/camera.dart';
+import 'package:casslab/helpers/helpers.dart';
+import 'package:casslab/widgets/image_capture_view.dart';
 import 'package:flutter/material.dart';
-import 'camera_screen.dart';
 
-void main() async {
-  WidgetsFlutterBinding.ensureInitialized();
-  // Obtain a list of the available cameras on the device.
-  final cameras = await availableCameras();
-  runApp(MyApp(cameras: cameras));
-}
-
-class MyApp extends StatelessWidget {
-  final List<CameraDescription> cameras;
-  const MyApp({Key? key, required this.cameras}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Camera App',
-      home: CameraScreen(cameras: cameras),
-    );
+Future<void> main() async {
+  try {
+    WidgetsFlutterBinding.ensureInitialized();
+    // Fetch the available cameras before initializing the app.
+    List<CameraDescription> cameras = await availableCameras();
+    CameraDescription camera = cameras[0];
+    runApp(ImageCaptureView(camera));
+  } on CameraException catch (e) {
+    logError(e.code, e.description);
   }
 }
