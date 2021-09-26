@@ -5,7 +5,6 @@ import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 
 class Home extends StatefulWidget {
-
   Classifier classifier;
 
   Home(this.classifier);
@@ -15,7 +14,7 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
-  bool _loading = true;
+  bool _noImageSelected = true;
   late File _image;
   late List _output;
   final picker = ImagePicker();
@@ -41,7 +40,7 @@ class _HomeState extends State<Home> {
     List output = await classifier.classifyImage(image);
     setState(() {
       _output = output;
-      _loading = false;
+      _noImageSelected = false;
     });
   }
 
@@ -82,81 +81,74 @@ class _HomeState extends State<Home> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Container(
-                child: Center(
-                  child: _loading == true
-                      ? null //show nothing if no picture selected
-                      : Container(
-                          child: Column(
-                            children: [
-                              Container(
-                                height: 250,
-                                width: 250,
-                                child: ClipRRect(
-                                  borderRadius: BorderRadius.circular(30),
-                                  child: Image.file(
-                                    _image,
-                                    fit: BoxFit.fill,
-                                  ),
-                                ),
-                              ),
-                              Divider(height: 25, thickness: 1),
-                              Text(
-                                '${_output[0]['label']}!',
-                                style: TextStyle(
-                                    color: Colors.white,
-                                    fontSize: 18,
-                                    fontWeight: FontWeight.w400),
-                              ),
-                              Divider(height: 25, thickness: 1),
-                            ],
-                          ),
-                        ),
-                ),
-              ),
-              Container(
-                child: Column(
-                  children: [
-                    GestureDetector(
-                      onTap: pickImage,
-                      child: Container(
-                        width: MediaQuery.of(context).size.width - 200,
-                        alignment: Alignment.center,
-                        padding:
-                            EdgeInsets.symmetric(horizontal: 24, vertical: 17),
-                        decoration: BoxDecoration(
-                            color: Colors.blueGrey[600],
-                            borderRadius: BorderRadius.circular(15)),
-                        child: Text(
-                          'Take A Photo',
-                          style: TextStyle(color: Colors.white, fontSize: 16),
-                        ),
-                      ),
-                    ),
-                    SizedBox(
-                      height: 30,
-                    ),
-                    GestureDetector(
-                      onTap: pickGalleryImage,
-                      child: Container(
-                        width: MediaQuery.of(context).size.width - 200,
-                        alignment: Alignment.center,
-                        padding: EdgeInsets.symmetric(
-                            horizontal: 24, vertical: 17),
-                        decoration: BoxDecoration(
-                            color: Colors.blueGrey[600],
-                            borderRadius: BorderRadius.circular(15)),
-                        child: Text(
-                          'Pick From Gallery',
-                          style: TextStyle(color: Colors.white, fontSize: 16),
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
+              imagePreviewWidget(),
+              mainButtonsWidget(),
             ],
           ),
+        ),
+      ),
+    );
+  }
+
+  Widget imagePreviewWidget() {
+    //show nothing if no picture selected
+    if (_noImageSelected) {
+      return Container();
+    }
+
+    return Center(
+      child: Column(
+        children: [
+          Container(
+            height: 250,
+            width: 250,
+            child: ClipRRect(
+              borderRadius: BorderRadius.circular(30),
+              child: Image.file(
+                _image,
+                fit: BoxFit.fill,
+              ),
+            ),
+          ),
+          Divider(height: 25, thickness: 1),
+          Text(
+            '${_output[0]['label']}!',
+            style: TextStyle(
+                color: Colors.white, fontSize: 18, fontWeight: FontWeight.w400),
+          ),
+          Divider(height: 25, thickness: 1),
+        ],
+      ),
+    );
+  }
+
+  Widget mainButtonsWidget() {
+    return Container(
+      child: Column(
+        children: [
+          buttonWidget('Take As Photo',pickImage),
+          SizedBox(
+            height: 30,
+          ),
+          buttonWidget( 'Pick Froms Gallery',pickGalleryImage),
+        ],
+      ),
+    );
+  }
+
+  Widget buttonWidget(String buttonText,GestureTapCallback? gestureTapCallback){
+    return           GestureDetector(
+      onTap: gestureTapCallback,
+      child: Container(
+        width: MediaQuery.of(context).size.width - 200,
+        alignment: Alignment.center,
+        padding: EdgeInsets.symmetric(horizontal: 24, vertical: 17),
+        decoration: BoxDecoration(
+            color: Colors.blueGrey[600],
+            borderRadius: BorderRadius.circular(15)),
+        child: Text(
+          buttonText,
+          style: TextStyle(color: Colors.white, fontSize: 16),
         ),
       ),
     );
