@@ -65,25 +65,28 @@ class _HomeState extends State<Home> {
     classifyImage(_image);
   }
 
-  showPreviousPredictionsPage(){
+  showPreviousPredictionsPage() {
     return null;
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Container(
-        color: Colors.black.withOpacity(0.9),
-        // padding: EdgeInsets.symmetric(horizontal: 35, vertical: 50),
+      body: SafeArea(
         child: Container(
-          alignment: Alignment.center,
-          decoration: BoxDecoration( color: Color(0xFF2A363B)),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              imagePreviewWidget(),
-              mainButtonsWidget(),
-            ],
+          decoration: const BoxDecoration(color: Colors.white54),
+          child: Container(
+            alignment: Alignment.center,
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                loginRegisterButtonWidget(),
+                Spacer(),
+                imagePreviewWidget(),
+                mainButtonsWidget(),
+                Spacer(),
+              ],
+            ),
           ),
         ),
       ),
@@ -116,9 +119,9 @@ class _HomeState extends State<Home> {
           Text(
             '${_output[0]['label']}',
             style: TextStyle(
-                color: Colors.white,
-                fontSize: 30,
-                fontWeight: FontWeight.w600,
+              color: Colors.black,
+              fontSize: 30,
+              fontWeight: FontWeight.w600,
             ),
           ),
           SizedBox(
@@ -133,34 +136,84 @@ class _HomeState extends State<Home> {
     return Container(
       child: Column(
         children: [
-          buttonWidget('Take A Photo',pickImage),
+          buttonWidget('Take A Photo', pickImage),
           SizedBox(
             height: 30,
           ),
-          buttonWidget( 'Pick From Gallery',pickGalleryImage),
+          buttonWidget('Pick From Gallery', pickGalleryImage),
           SizedBox(
             height: 30,
           ),
-          buttonWidget( 'My Predictions',showPreviousPredictionsPage),
+          buttonWidget('My Predictions', showPreviousPredictionsPage),
         ],
       ),
     );
   }
 
-  Widget buttonWidget(String buttonText,GestureTapCallback? gestureTapCallback){
-    return           GestureDetector(
+  Widget buttonWidget(
+      String buttonText, GestureTapCallback? gestureTapCallback) {
+    return GestureDetector(
       onTap: gestureTapCallback,
       child: Container(
         width: MediaQuery.of(context).size.width - 200,
         alignment: Alignment.center,
         padding: EdgeInsets.symmetric(horizontal: 24, vertical: 17),
         decoration: BoxDecoration(
-            color: Colors.blueGrey[600],
-            borderRadius: BorderRadius.circular(15)),
+            color: Color(0xFF225340), borderRadius: BorderRadius.circular(15)),
         child: Text(
           buttonText,
           style: TextStyle(color: Colors.white, fontSize: 16),
         ),
+      ),
+    );
+  }
+
+  Widget loginRegisterButtonWidget() {
+    return Container(
+      child: Container(
+        child: Row(
+          children: [
+            Visibility(
+              child: TextButton(
+                onPressed: () => {},
+                child: Row(
+                  children: const <Widget>[
+                    Icon(Icons.account_circle_outlined,
+                        size: 25, color: Colors.black),
+                    Text(" Log in/Register",
+                        style: TextStyle(fontSize: 25, color: Colors.black))
+                  ],
+                ),
+              ),
+              visible: false,
+            ),
+            Visibility(
+                child: TextButton(
+                  onPressed: () => {},
+                  child: Row(
+                    children: const <Widget>[
+                      Icon(Icons.save, size: 25),
+                      Text(" Save", style: TextStyle(fontSize: 25))
+                    ],
+                  ),
+                ),
+                visible: true),
+            Spacer(),
+            Visibility(
+              child: TextButton(
+                onPressed: () => {},
+                child: Row(
+                  children: const <Widget>[
+                    Text(" Log out", style: TextStyle(fontSize: 25)),
+                    Icon(Icons.exit_to_app_outlined, size: 25)
+                  ],
+                ),
+              ),
+              visible: true,
+            ),
+          ],
+        ),
+        alignment: Alignment.topLeft,
       ),
     );
   }

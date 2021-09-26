@@ -12,6 +12,10 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      theme: ThemeData(
+        brightness: Brightness.light,
+        /* light theme settings */
+      ),
       title: 'Cassava Recognition',
       home: Home(ClassifierOne()),
       debugShowCheckedModeBanner: false,
