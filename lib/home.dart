@@ -65,19 +65,19 @@ class _HomeState extends State<Home> {
     classifyImage(_image);
   }
 
+  showPreviousPredictionsPage(){
+    return null;
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: Container(
         color: Colors.black.withOpacity(0.9),
-        padding: EdgeInsets.symmetric(horizontal: 35, vertical: 50),
+        // padding: EdgeInsets.symmetric(horizontal: 35, vertical: 50),
         child: Container(
           alignment: Alignment.center,
-          padding: EdgeInsets.all(30),
-          decoration: BoxDecoration(
-            color: Color(0xFF2A363B),
-            borderRadius: BorderRadius.circular(30),
-          ),
+          decoration: BoxDecoration( color: Color(0xFF2A363B)),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
@@ -110,13 +110,20 @@ class _HomeState extends State<Home> {
               ),
             ),
           ),
-          Divider(height: 25, thickness: 1),
-          Text(
-            '${_output[0]['label']}!',
-            style: TextStyle(
-                color: Colors.white, fontSize: 18, fontWeight: FontWeight.w400),
+          SizedBox(
+            height: 30,
           ),
-          Divider(height: 25, thickness: 1),
+          Text(
+            '${_output[0]['label']}',
+            style: TextStyle(
+                color: Colors.white,
+                fontSize: 30,
+                fontWeight: FontWeight.w600,
+            ),
+          ),
+          SizedBox(
+            height: 30,
+          ),
         ],
       ),
     );
@@ -126,11 +133,15 @@ class _HomeState extends State<Home> {
     return Container(
       child: Column(
         children: [
-          buttonWidget('Take As Photo',pickImage),
+          buttonWidget('Take A Photo',pickImage),
           SizedBox(
             height: 30,
           ),
-          buttonWidget( 'Pick Froms Gallery',pickGalleryImage),
+          buttonWidget( 'Pick From Gallery',pickGalleryImage),
+          SizedBox(
+            height: 30,
+          ),
+          buttonWidget( 'My Predictions',showPreviousPredictionsPage),
         ],
       ),
     );
