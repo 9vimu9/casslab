@@ -95,7 +95,7 @@ class _HomeState extends State<Home> {
                               Divider(height: 25, thickness: 1),
                               Text(
                                 '${_output[0]['label']}!',
-                                style: const TextStyle(
+                                style: TextStyle(
                                     color: Colors.white,
                                     fontSize: 18,
                                     fontWeight: FontWeight.w400),
@@ -133,12 +133,12 @@ class _HomeState extends State<Home> {
                       child: Container(
                         width: MediaQuery.of(context).size.width - 200,
                         alignment: Alignment.center,
-                        padding: const EdgeInsets.symmetric(
+                        padding: EdgeInsets.symmetric(
                             horizontal: 24, vertical: 17),
                         decoration: BoxDecoration(
                             color: Colors.blueGrey[600],
                             borderRadius: BorderRadius.circular(15)),
-                        child: const Text(
+                        child: Text(
                           'Pick From Gallery',
                           style: TextStyle(color: Colors.white, fontSize: 16),
                         ),
