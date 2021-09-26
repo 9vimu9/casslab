@@ -1,6 +1,6 @@
 import 'dart:io';
 
-import 'package:casslab/actions/image_classifier.dart';
+import 'package:casslab/classifiers/image_classifier.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 
