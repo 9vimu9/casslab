@@ -16,12 +16,10 @@ const String MODEL_PATH = "assets/models/model.tflite";
 const String LABELS_PATH = "assets/models/labels.txt";
 
 class ClassifierOne extends Classifier {
-
   ClassifierOne() : super(MODEL_PATH, LABELS_PATH);
 
   @override
   Future<List> classifyImage(File image) async {
-
     img.Image oriImage = img.decodeJpg(image.readAsBytesSync());
 
     img.Image resizedImage = img.copyResize(
@@ -31,8 +29,7 @@ class ClassifierOne extends Classifier {
     );
 
     var output = await Tflite.runModelOnBinary(
-        binary: _imageToByteListFloat32(
-          resizedImage, IMAGE_SIZE, MEAN, STD),
+        binary: _imageToByteListFloat32(resizedImage, IMAGE_SIZE, MEAN, STD),
         numResults: NUMBER_OF_CLASSES,
         threshold: THRESHOLD,
         asynch: true);
@@ -61,3 +58,20 @@ class ClassifierOne extends Classifier {
     return convertedBytes.buffer.asUint8List();
   }
 }
+/*
+* Machine learning models
+[https://colab.research.google.com/drive/1HALRWZHvCFrhFetq7NEV60ZP_yNltB2P#scrollTo=mAYq1H6nw1-j](https://colab.research.google.com/drive/1HALRWZHvCFrhFetq7NEV60ZP_yNltB2P#scrollTo=mAYq1H6nw1-j)
+
+TensorFlow hub cassava model
+[https://tfhub.dev/google/lite-model/cropnet/classifier/cassava_disease_V1/1](https://tfhub.dev/google/lite-model/cropnet/classifier/cassava_disease_V1/1)
+
+google collab of TensorFlow hub
+[https://colab.research.google.com/github/tensorflow/hub/blob/master/examples/colab/cropnet_cassava.ipynb](https://colab.research.google.com/github/tensorflow/hub/blob/master/examples/colab/cropnet_cassava.ipynb)
+
+kaggle my code
+[https://www.kaggle.com/nipunwimukthi/cassava-infer/edit](https://www.kaggle.com/nipunwimukthi/cassava-infer/edit)
+
+kaggle ref code
+[cassava-infer](https://www.kaggle.com/devonstanfield/cassava-infer/notebook)
+*
+* */
