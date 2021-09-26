@@ -1,17 +1,18 @@
-import 'dart:async';
-import 'package:camera/camera.dart';
-import 'package:casslab/helpers/helpers.dart';
-import 'package:casslab/widgets/image_capture_view.dart';
 import 'package:flutter/material.dart';
+import 'home.dart';
 
-Future<void> main() async {
-  try {
-    WidgetsFlutterBinding.ensureInitialized();
-    // Fetch the available cameras before initializing the app.
-    List<CameraDescription> cameras = await availableCameras();
-    CameraDescription camera = cameras[0];
-    runApp(ImageCaptureView(camera));
-  } on CameraException catch (e) {
-    logError(e.code, e.description);
+void main() {
+  runApp(MyApp());
+}
+
+class MyApp extends StatelessWidget {
+  // This widget is the root of your application.
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      title: 'Cassava Recognition',
+      home: Home(),
+      debugShowCheckedModeBanner: false,
+    );
   }
 }
