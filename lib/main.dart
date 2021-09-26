@@ -1,3 +1,5 @@
+import 'package:casslab/classifiers/classifier.dart';
+import 'package:casslab/classifiers/classifier_one.dart';
 import 'package:flutter/material.dart';
 import 'home.dart';
 
@@ -11,7 +13,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Cassava Recognition',
-      home: Home(),
+      home: Home(ClassifierOne()),
       debugShowCheckedModeBanner: false,
     );
   }

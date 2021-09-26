@@ -1,12 +1,17 @@
 import 'dart:io';
 
-import 'package:casslab/classifiers/image_classifier.dart';
+import 'package:casslab/classifiers/classifier.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 
 class Home extends StatefulWidget {
+
+  Classifier classifier;
+
+  Home(this.classifier);
+
   @override
-  _HomeState createState() => _HomeState();
+  _HomeState createState() => _HomeState(classifier);
 }
 
 class _HomeState extends State<Home> {
@@ -14,11 +19,14 @@ class _HomeState extends State<Home> {
   late File _image;
   late List _output;
   final picker = ImagePicker();
+  Classifier classifier;
+
+  _HomeState(this.classifier);
 
   @override
   void initState() {
     super.initState();
-    ImageClassifier.loadModel().then((value) {
+    classifier.loadModel().then((value) {
       setState(() {});
     });
   }
@@ -26,11 +34,11 @@ class _HomeState extends State<Home> {
   @override
   void dispose() {
     super.dispose();
-    ImageClassifier.closeModel();
+    classifier.closeModel();
   }
 
   classifyImage(File image) async {
-    List output = await ImageClassifier.classifyImage(image);
+    List output = await classifier.classifyImage(image);
     setState(() {
       _output = output;
       _loading = false;
