@@ -87,6 +87,7 @@ flutter:
    - assets/images/splash_1500.png
    - assets/images/splash_500.png
    - assets/icons/chat.svg
+   - assets/icons/chat.png
    - assets/icons/facebook.svg
    - assets/icons/google-plus.svg
    - assets/icons/login.svg

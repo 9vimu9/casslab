@@ -16,13 +16,9 @@ class Body extends StatelessWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-            Text(
-              "WELCOME TO EDU",
-              style: TextStyle(fontWeight: FontWeight.bold),
-            ),
             SizedBox(height: size.height * 0.05),
-            SvgPicture.asset(
-              "assets/icons/chat.svg",
+            Image.asset(
+              "assets/icons/chat.png",
               height: size.height * 0.45,
             ),
             SizedBox(height: size.height * 0.05),
