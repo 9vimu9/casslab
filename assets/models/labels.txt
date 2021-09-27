@@ -1,6 +1,6 @@
-Cassava Bacterial Blight
-Cassava Brown Streak Disease
-Cassava Green Mite
-Cassava Mosaic Disease
-Cassava Healthy
+Bacterial Blight
+Brown Streak Disease
+Green Mite
+Mosaic Disease
+Healthy
 Unknown

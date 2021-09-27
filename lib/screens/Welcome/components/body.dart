@@ -1,10 +1,9 @@
-import 'package:flutter/material.dart';
-import 'package:casslab/screens/Login/login_screen.dart';
-import 'package:casslab/screens/Signup/signup_screen.dart';
-import 'package:casslab/screens/Welcome/components/background.dart';
 import 'package:casslab/components/rounded_button.dart';
 import 'package:casslab/constants.dart';
-import 'package:flutter_svg/svg.dart';
+import 'package:casslab/screens/Login/login_screen.dart';
+import 'package:casslab/screens/Prediction/prediction_screen.dart';
+import 'package:casslab/screens/Welcome/components/background.dart';
+import 'package:flutter/material.dart';
 
 class Body extends StatelessWidget {
   @override
@@ -23,20 +22,20 @@ class Body extends StatelessWidget {
             ),
             SizedBox(height: size.height * 0.05),
             RoundedButton(
-              text: "LOGIN",
+              text: "PREDICT NOW !",
               press: () {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
                     builder: (context) {
-                      return LoginScreen();
+                      return PredictionScreen();
                     },
                   ),
                 );
               },
             ),
             RoundedButton(
-              text: "SIGN UP",
+              text: "LOGIN/REGISTER",
               color: kPrimaryLightColor,
               textColor: Colors.black,
               press: () {
@@ -44,7 +43,7 @@ class Body extends StatelessWidget {
                   context,
                   MaterialPageRoute(
                     builder: (context) {
-                      return SignUpScreen();
+                      return LoginScreen();
                     },
                   ),
                 );
