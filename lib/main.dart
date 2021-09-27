@@ -1,5 +1,7 @@
 import 'package:casslab/classifiers/classifier.dart';
 import 'package:casslab/classifiers/classifier_one.dart';
+import 'package:casslab/screens/Login/login_screen.dart';
+import 'package:casslab/screens/Welcome/welcome_screen.dart';
 import 'package:flutter/material.dart';
 import 'home.dart';
 
@@ -17,7 +19,9 @@ class MyApp extends StatelessWidget {
         /* light theme settings */
       ),
       title: 'Cassava Recognition',
-      home: Home(ClassifierOne()),
+      // home: Home(ClassifierOne()),
+      // home: LoginScreen(),
+      home: WelcomeScreen(),
       debugShowCheckedModeBanner: false,
     );
   }

@@ -40,6 +40,7 @@ dependencies:
   get: ^4.3.8
   tflite: ^1.1.2
   image_picker: ^0.8.4+2
+  flutter_svg: ^0.22.0
 
 dev_dependencies:
   flutter_test:
@@ -75,6 +76,24 @@ flutter:
   assets:
    - assets/models/model.tflite
    - assets/models/labels.txt
+
+   - assets/models/labels.txt
+   - assets/images/login_bottom.png
+   - assets/images/logo.png
+   - assets/images/main_bottom.png
+   - assets/images/main_top.png
+   - assets/images/signup_top.png
+   - assets/images/splash_1000.png
+   - assets/images/splash_1500.png
+   - assets/images/splash_500.png
+   - assets/icons/chat.svg
+   - assets/icons/facebook.svg
+   - assets/icons/google-plus.svg
+   - assets/icons/login.svg
+   - assets/icons/signup.svg
+   - assets/icons/twitter.svg
+
+
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.
