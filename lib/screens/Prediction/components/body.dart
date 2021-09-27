@@ -122,7 +122,7 @@ class _BodyState extends State<Body> {
             ),
           ),
           SizedBox(
-            height: 20,
+            height: 10,
           ),
           Text(
             '${_output[0]['label']}',
@@ -133,7 +133,7 @@ class _BodyState extends State<Body> {
             ),
           ),
           SizedBox(
-            height: 20,
+            height: 30,
           ),
         ],
       ),
