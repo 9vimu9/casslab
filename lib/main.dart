@@ -1,3 +1,4 @@
+import 'package:casslab/screens/Save/save_screen.dart';
 import 'package:casslab/screens/Welcome/welcome_screen.dart';
 import 'package:flutter/material.dart';
 
@@ -15,6 +16,7 @@ class MyApp extends StatelessWidget {
       ),
       title: 'Cassava Recognition',
       home: WelcomeScreen(),
+      // home: SaveScreen(),
       debugShowCheckedModeBanner: false,
     );
   }

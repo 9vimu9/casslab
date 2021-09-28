@@ -1,4 +1,5 @@
 import 'package:casslab/screens/Login/login_screen.dart';
+import 'package:casslab/screens/Save/save_screen.dart';
 import 'package:flutter/material.dart';
 
 class Background extends StatelessWidget {
@@ -33,7 +34,16 @@ class Background extends StatelessWidget {
         children: [
           Visibility(
               child: TextButton(
-                onPressed: () => {},
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) {
+                        return SaveScreen();
+                      },
+                    ),
+                  );
+                },
                 child: Row(
                   children: const <Widget>[
                     Icon(Icons.save, size: 20, color: Colors.black),
