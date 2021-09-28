@@ -1,3 +1,4 @@
+import 'package:casslab/screens/Login/login_screen.dart';
 import 'package:flutter/material.dart';
 
 class Background extends StatelessWidget {
@@ -18,21 +19,43 @@ class Background extends StatelessWidget {
       child: Stack(
         alignment: Alignment.center,
         children: <Widget>[
-          loginRegisterButtonWidget(),
+          loginRegisterButtonWidget(context),
           child,
         ],
       ),
     );
   }
 
-  Widget loginRegisterButtonWidget() {
+  Widget loginRegisterButtonWidget(BuildContext context) {
     return Container(
       padding: EdgeInsets.only(top: 20),
       child: Row(
         children: [
           Visibility(
+              child: TextButton(
+                onPressed: () => {},
+                child: Row(
+                  children: const <Widget>[
+                    Icon(Icons.save, size: 20, color: Colors.black),
+                    Text(" Save",
+                        style: TextStyle(fontSize: 20, color: Colors.black))
+                  ],
+                ),
+              ),
+              visible: true),
+          Spacer(),
+          Visibility(
             child: TextButton(
-              onPressed: () => {},
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) {
+                      return LoginScreen();
+                    },
+                  ),
+                );
+              },
               child: Row(
                 children: const <Widget>[
                   Icon(Icons.account_circle_outlined,
@@ -42,21 +65,8 @@ class Background extends StatelessWidget {
                 ],
               ),
             ),
-            visible: false,
-          ),
-          Visibility(
-              child: TextButton(
-                onPressed: () => {},
-                child: Row(
-                  children: const <Widget>[
-                    Icon(Icons.save, size: 20, color: Colors.black),
-                    Text(" Save",
-                        style: TextStyle(fontSize: 20,color: Colors.black))
-                  ],
-                ),
-              ),
-              visible: true),
-          Spacer(),
+            visible: true,
+          ), //login
           Visibility(
             child: TextButton(
               onPressed: () => {},
@@ -69,8 +79,8 @@ class Background extends StatelessWidget {
                 ],
               ),
             ),
-            visible: true,
-          ),
+            visible: false,
+          ), //logout
         ],
       ),
       alignment: Alignment.topLeft,

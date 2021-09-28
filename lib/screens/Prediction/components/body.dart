@@ -42,6 +42,7 @@ class _BodyState extends State<Body> {
 
   classifyImage(File image) async {
     List output = await classifier.classifyImage(image);
+    //[{confidence: 0.8950297236442566, index: 2, label: Green Mite}]
     setState(() {
       _output = output;
       _noImageSelected = false;
@@ -76,7 +77,6 @@ class _BodyState extends State<Body> {
   @override
   Widget build(BuildContext context) {
     size = MediaQuery.of(context).size;
-    print(size.toString());
     // This size provide us total height and width of our screen
     return Background(
       child: SingleChildScrollView(

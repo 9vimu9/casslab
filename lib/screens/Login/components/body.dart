@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:casslab/screens/Login/components/background.dart';
-// import 'package:casslab/screens/Signup/signup_screen.dart';
+import 'package:casslab/screens/Signup/signup_screen.dart';
 import 'package:casslab/components/already_have_an_account_acheck.dart';
 import 'package:casslab/components/rounded_button.dart';
 import 'package:casslab/components/rounded_input_field.dart';
@@ -44,8 +44,7 @@ class Body extends StatelessWidget {
                   context,
                   MaterialPageRoute(
                     builder: (context) {
-                      // return SignUpScreen();
-                      return Container();
+                      return SignUpScreen();
                     },
                   ),
                 );
