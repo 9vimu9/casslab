@@ -23,18 +23,18 @@ class Body extends StatelessWidget {
             Center(
               child: Column(
                 children: [
-                  Container(
-                    height: size.height * 0.4,
-                    child: FittedBox(
-                      alignment: Alignment.bottomCenter,
-                      fit: BoxFit.fitWidth,
-                      // child: ClipRRect(child: Image.file(_image)),
-                      child: SvgPicture.asset(
-                        "assets/icons/login.svg",
-                        height: size.height * 0.35,
-                      ),
-                    ),
-                  ),
+                  // Container(
+                  //   height: size.height * 0.4,
+                  //   child: FittedBox(
+                  //     alignment: Alignment.bottomCenter,
+                  //     fit: BoxFit.fitWidth,
+                  //     // child: ClipRRect(child: Image.file(_image)),
+                  //     child: SvgPicture.asset(
+                  //       "assets/icons/login.svg",
+                  //       height: size.height * 0.35,
+                  //     ),
+                  //   ),
+                  // ),
                   SizedBox(height: size.height * 0.02),
                   Text(
                     'prediction here',
