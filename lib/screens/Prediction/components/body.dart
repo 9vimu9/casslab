@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:casslab/classifiers/classifier.dart';
 import 'package:casslab/components/rounded_button.dart';
 import 'package:casslab/constants.dart';
+import 'package:casslab/screens/List/list_screen.dart';
 import 'package:casslab/screens/Prediction/components/background.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
@@ -96,7 +97,16 @@ class _BodyState extends State<Body> {
               text: "My Predictions",
               color: kPrimaryLightColor,
               textColor: Colors.black,
-              press: showPreviousPredictionsPage,
+              press: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) {
+                      return ListScreen();
+                    },
+                  ),
+                );
+              },
             ),
           ],
         ),
