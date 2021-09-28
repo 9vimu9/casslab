@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "440764662880",
+    "project_id": "caab-14abc",
+    "storage_bucket": "caab-14abc.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:440764662880:android:c5b8e49755a3627e436f05",
+        "android_client_info": {
+          "package_name": "com.casslab.casslab"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "440764662880-9jne7dfk9r748m3cedes6ir5ujr43uq8.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDJKRlKtdO2dH_rw_OyJ0dkosZrcThkd60"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "440764662880-9jne7dfk9r748m3cedes6ir5ujr43uq8.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
