@@ -1,6 +1,9 @@
+import 'package:casslab/actions/Authentication/login_firebase.dart';
 import 'package:casslab/screens/Login/login_screen.dart';
 import 'package:casslab/screens/Save/save_screen.dart';
 import 'package:flutter/material.dart';
+
+import '../prediction_screen.dart';
 
 class Background extends StatelessWidget {
   final Widget child;
@@ -33,26 +36,27 @@ class Background extends StatelessWidget {
       child: Row(
         children: [
           Visibility(
-              child: TextButton(
-                onPressed: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) {
-                        return SaveScreen();
-                      },
-                    ),
-                  );
-                },
-                child: Row(
-                  children: const <Widget>[
-                    Icon(Icons.save, size: 20, color: Colors.black),
-                    Text(" Save",
-                        style: TextStyle(fontSize: 20, color: Colors.black))
-                  ],
-                ),
+            child: TextButton(
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) {
+                      return SaveScreen();
+                    },
+                  ),
+                );
+              },
+              child: Row(
+                children: const <Widget>[
+                  Icon(Icons.save, size: 20, color: Colors.black),
+                  Text(" Save",
+                      style: TextStyle(fontSize: 20, color: Colors.black))
+                ],
               ),
-              visible: true),
+            ),
+            // visible: await LoginFirebase().checkUserIsLoggedIn(),
+          ),
           Spacer(),
           Visibility(
             child: TextButton(
@@ -75,11 +79,20 @@ class Background extends StatelessWidget {
                 ],
               ),
             ),
-            visible: true,
+            // visible: !LoginFirebase().checkUserIsLoggedIn(),
           ), //login
           Visibility(
             child: TextButton(
-              onPressed: () => {},
+              onPressed: (){
+              LoginFirebase().signUserOut();
+              Navigator.pushAndRemoveUntil<dynamic>(
+                context,
+                MaterialPageRoute<dynamic>(
+                  builder: (BuildContext context) => PredictionScreen(),
+                ),
+                    (route) => false,//if you want to disable back feature set to false
+              );
+              },
               child: Row(
                 children: const <Widget>[
                   Text(" Log out",
@@ -89,7 +102,7 @@ class Background extends StatelessWidget {
                 ],
               ),
             ),
-            visible: false,
+            // visible: LoginFirebase().checkUserIsLoggedIn(),
           ), //logout
         ],
       ),

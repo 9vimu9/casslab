@@ -24,15 +24,22 @@ class Body extends StatelessWidget {
               height: size.height * 0.35,
             ),
             RoundedInputField(
+              name: "email_field",
+              validator: (value) {
+                return null;
+              },
               hintText: "Your Email",
               onChanged: (value) {},
             ),
             RoundedPasswordField(
+              name: "password_field",
               onChanged: (value) {},
+              validator: (String? value) {  },
             ),
             RoundedButton(
               text: "SIGNUP",
-              press: () {},
+              press: () {
+              },
             ),
             SizedBox(height: size.height * 0.03),
             AlreadyHaveAnAccountCheck(

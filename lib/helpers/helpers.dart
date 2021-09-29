@@ -9,6 +9,6 @@ void logError(String code, String? message) {
   }
 }
 
-void showInSnackBar(String message) {
-  Get.snackbar("Camera", message,snackPosition: SnackPosition.BOTTOM,colorText: Colors.white );
+void showInSnackBar(String message,{String title="CassLab"}) {
+  Get.snackbar(title, message,snackPosition: SnackPosition.BOTTOM,colorText: Colors.black );
 }
