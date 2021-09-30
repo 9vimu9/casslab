@@ -68,13 +68,14 @@ class BodyState extends State<Body> {
                     final result = await LoginFirebase()
                         .checkLoginAttemptIsCorrect(email, password);
                     if (result) {
-                      Navigator.push(
+
+                      Navigator.pushAndRemoveUntil<dynamic>(
                         context,
-                        MaterialPageRoute(
-                          builder: (context) {
-                            return PredictionScreen();
-                          },
+                        MaterialPageRoute<dynamic>(
+                          builder: (BuildContext context) => PredictionScreen(),
                         ),
+                            (route) => false,
+                        //if you want to disable back feature set to false
                       );
                     }
                   }
