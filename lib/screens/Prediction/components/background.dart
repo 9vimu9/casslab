@@ -5,13 +5,31 @@ import 'package:flutter/material.dart';
 
 import '../prediction_screen.dart';
 
-class Background extends StatelessWidget {
+class Background extends StatefulWidget {
   final Widget child;
 
   const Background({
     Key? key,
     required this.child,
   }) : super(key: key);
+
+  @override
+  _BackgroundState createState() => _BackgroundState(child);
+}
+
+class _BackgroundState extends State<Background> {
+  final Widget child;
+  bool _userLoggedIn = false;
+
+  _BackgroundState(this.child);
+
+  @override
+  void initState() {
+    LoginFirebase().checkUserIsLoggedIn().listen((user) {
+        _userLoggedIn = !(user == null);
+    });
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -55,7 +73,7 @@ class Background extends StatelessWidget {
                 ],
               ),
             ),
-            // visible: await LoginFirebase().checkUserIsLoggedIn(),
+            visible: _userLoggedIn,
           ),
           Spacer(),
           Visibility(
@@ -79,19 +97,20 @@ class Background extends StatelessWidget {
                 ],
               ),
             ),
-            // visible: !LoginFirebase().checkUserIsLoggedIn(),
+            visible: !_userLoggedIn,
           ), //login
           Visibility(
             child: TextButton(
-              onPressed: (){
-              LoginFirebase().signUserOut();
-              Navigator.pushAndRemoveUntil<dynamic>(
-                context,
-                MaterialPageRoute<dynamic>(
-                  builder: (BuildContext context) => PredictionScreen(),
-                ),
-                    (route) => false,//if you want to disable back feature set to false
-              );
+              onPressed: () {
+                LoginFirebase().signUserOut();
+                Navigator.pushAndRemoveUntil<dynamic>(
+                  context,
+                  MaterialPageRoute<dynamic>(
+                    builder: (BuildContext context) => PredictionScreen(),
+                  ),
+                  (route) =>
+                      false, //if you want to disable back feature set to false
+                );
               },
               child: Row(
                 children: const <Widget>[
@@ -102,7 +121,7 @@ class Background extends StatelessWidget {
                 ],
               ),
             ),
-            // visible: LoginFirebase().checkUserIsLoggedIn(),
+            visible: _userLoggedIn,
           ), //logout
         ],
       ),

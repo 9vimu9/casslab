@@ -24,15 +24,8 @@ class LoginFirebase {
     }
   }
 
-  Future<bool> checkUserIsLoggedIn() async {
-    User? userData;
-    await FirebaseAuth.instance.idTokenChanges().listen((User? user) {
-      user = userData;
-      print(user == null);
-    });
-    print(userData);
-
-    return true;
+  Stream<User?> checkUserIsLoggedIn() {
+    return FirebaseAuth.instance.idTokenChanges();
   }
 
   signUserOut() async {
