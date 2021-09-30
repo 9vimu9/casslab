@@ -1,19 +1,29 @@
 import 'package:flutter/material.dart';
 import 'package:casslab/screens/Login/login_screen.dart';
 import 'package:casslab/screens/Signup/components/background.dart';
-import 'package:casslab/screens/Signup/components/or_divider.dart';
-import 'package:casslab/screens/Signup/components/social_icon.dart';
 import 'package:casslab/components/already_have_an_account_acheck.dart';
 import 'package:casslab/components/rounded_button.dart';
 import 'package:casslab/components/rounded_input_field.dart';
 import 'package:casslab/components/rounded_password_field.dart';
+import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:flutter_svg/svg.dart';
 
-class Body extends StatelessWidget {
+class Body extends StatefulWidget {
+  const Body({
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  BodyState createState() {
+    return BodyState();
+  }
+}
+class BodyState extends State<Body> {
+  final _formKey = GlobalKey<FormBuilderState>();
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
-    return Background(
+    return FormBuilder(child: Background(
       child: SingleChildScrollView(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
@@ -58,6 +68,9 @@ class Body extends StatelessWidget {
           ],
         ),
       ),
+    ),
+      key: _formKey,
+      autovalidateMode: AutovalidateMode.onUserInteraction,
     );
   }
 }

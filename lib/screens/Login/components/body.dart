@@ -28,7 +28,6 @@ class BodyState extends State<Body> {
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
     return FormBuilder(
-      onChanged: () => print("form has changed"),
       key: _formKey,
       autovalidateMode: AutovalidateMode.onUserInteraction,
       child: Background(
