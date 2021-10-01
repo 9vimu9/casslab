@@ -125,11 +125,14 @@ class _BodyState extends State<Body> {
         children: [
           Container(
             height: size.height * 0.4,
-            child: FittedBox(
-              alignment: Alignment.bottomCenter,
-              fit: BoxFit.fitWidth,
-              child: ClipRRect(child: Image.file(_image)),
-            ),
+            child: OverflowBox(
+                minWidth: 0.0,
+                minHeight: 0.0,
+                maxWidth: double.infinity,
+                child: Image.file(
+                  _image,
+                  fit: BoxFit.cover,
+                )),
           ),
           SizedBox(
             height: 10,
