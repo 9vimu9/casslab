@@ -1,6 +1,7 @@
 import 'package:casslab/actions/Authentication/login_firebase.dart';
 import 'package:casslab/screens/Login/login_screen.dart';
 import 'package:casslab/screens/Save/save_screen.dart';
+import 'package:casslab/screens/Welcome/welcome_screen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
@@ -95,7 +96,7 @@ class Background extends StatelessWidget {
                     Navigator.pushAndRemoveUntil<dynamic>(
                       context,
                       MaterialPageRoute<dynamic>(
-                        builder: (BuildContext context) => PredictionScreen(),
+                        builder: (BuildContext context) => WelcomeScreen(),
                       ),
                       (route) =>
                           false, //if you want to disable back feature set to false

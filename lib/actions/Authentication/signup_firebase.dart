@@ -6,7 +6,7 @@ class SignupFirebase {
     try {
       UserCredential userCredential =
           await FirebaseAuth.instance.createUserWithEmailAndPassword(
-        email: email,
+        email: email.trim(),
         password: password,
       );
       return true;
@@ -18,6 +18,7 @@ class SignupFirebase {
         showInSnackBar('The account already exists for that email.',
             title: "User Registration");
       }
+      showInSnackBar(e.code,title: "User Registration");
       return false;
     } catch (e) {
       showInSnackBar('something went wrong', title: "User Registration");

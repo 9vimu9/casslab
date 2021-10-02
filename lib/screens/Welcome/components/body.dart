@@ -45,11 +45,12 @@ class Body extends StatelessWidget {
       ),
     );
   }
+  final Future<dynamic> user = LoginFirebase().checkUserIsLoggedIn().first;
 
   Widget loginButtonWidget(){
 
      return FutureBuilder(
-      future: LoginFirebase().checkUserIsLoggedIn().first,
+      future: user,
       builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
         bool _userLoggedIn = !(snapshot.data == null);
         return Visibility(
