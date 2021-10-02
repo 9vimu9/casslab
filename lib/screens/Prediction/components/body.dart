@@ -2,13 +2,13 @@ import 'dart:io';
 
 import 'package:casslab/classifiers/classifier.dart';
 import 'package:casslab/components/rounded_button.dart';
+import 'package:casslab/components/top_button_bar.dart';
 import 'package:casslab/constants.dart';
 import 'package:casslab/helpers/helpers.dart';
 import 'package:casslab/screens/List/list_screen.dart';
 import 'package:casslab/screens/Prediction/components/background.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:path_provider/path_provider.dart';
 
 class Body extends StatefulWidget {
   Classifier classifier;
@@ -91,7 +91,7 @@ class _BodyState extends State<Body> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-            // SizedBox(height: size.height * 0.05),
+            TopButtonBar(),
             imagePreviewWidget(),
             RoundedButton(text: "Take A Photo", press: pickImage),
             RoundedButton(
@@ -131,7 +131,7 @@ class _BodyState extends State<Body> {
       child: Column(
         children: [
           Container(
-            height: size.height * 0.4,
+            height: size.height * 0.55,
             child: OverflowBox(
                 minWidth: 0.0,
                 minHeight: 0.0,
@@ -153,7 +153,7 @@ class _BodyState extends State<Body> {
             ),
           ),
           SizedBox(
-            height: 30,
+            height: 10,
           ),
         ],
       ),
