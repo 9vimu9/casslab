@@ -5,12 +5,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 
 class AddToFavoritesDialog {
+  final String? initialValue;
   final BuildContext context;
   final GlobalKey<FormBuilderState> formKey;
   final void Function()? onSave;
   final void Function()? onCancel;
 
   const AddToFavoritesDialog(
+    this.initialValue,
     this.context,
     this.formKey,
     this.onSave,
@@ -37,6 +39,7 @@ class AddToFavoritesDialog {
                   hintText: "add a short description...",
                   onChanged: (value) {},
                   validator: FormBuilderValidators.compose([]),
+                  initialValue: initialValue,
                 ),
                 actions: <Widget>[
                   RoundedButton(

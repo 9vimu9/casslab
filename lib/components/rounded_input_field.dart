@@ -7,6 +7,7 @@ class RoundedInputField extends StatelessWidget {
   final String hintText;
   final String name;
   final IconData? icon;
+  final String? initialValue;
   final ValueChanged<String?>? onChanged;
   final FormFieldValidator<String> validator;
   final int? minLines;
@@ -21,12 +22,14 @@ class RoundedInputField extends StatelessWidget {
     required this.validator,
     this.minLines,
     this.maxLines,
+    this.initialValue,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return TextFieldContainer(
       child: FormBuilderTextField(
+        initialValue: initialValue,
         name: name,
         validator: validator,
         onChanged: onChanged,

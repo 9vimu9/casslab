@@ -23,7 +23,9 @@ class Body extends StatefulWidget {
 
 class _BodyState extends State<Body> {
   bool _noImageSelected = true;
+  bool _addedToFavourite = false;
   File? _image;
+  String? _description;
   late List _output;
   final picker = ImagePicker();
   Classifier classifier;
@@ -52,6 +54,8 @@ class _BodyState extends State<Body> {
     setState(() {
       _output = output;
       _noImageSelected = false;
+      _description = "";
+      _addedToFavourite = false;
     });
   }
 
@@ -191,15 +195,28 @@ class _BodyState extends State<Body> {
             SizedBox(
                 width: size.width * 0.1,
                 child: IconButton(
-                  icon: Icon(Icons.favorite_border,
-                      size: 36, color: kPrimaryColor),
+                  icon: Icon(
+                      _addedToFavourite
+                          ? Icons.favorite_outlined
+                          : Icons.favorite_border,
+                      size: 36,
+                      color: kPrimaryColor),
                   onPressed: () {
-                    AddToFavoritesDialog(
-                      context,
-                      _formKey,
-                      onSaveFavourite,
-                      onCancelFavouriteDialog,
-                    ).displayAddToFavoritesDialog();
+                    if (_addedToFavourite) {
+                      // remove from favourite list
+                      // ask question before do that
+                      setState(() {
+                        _addedToFavourite = false;
+                      });
+                    } else {
+                      AddToFavoritesDialog(
+                        _description,
+                        context,
+                        _formKey,
+                        onSaveFavourite,
+                        onCancelFavouriteDialog,
+                      ).displayAddToFavoritesDialog();
+                    }
                   },
                 )),
             SizedBox(width: size.width * 0.1),
@@ -212,12 +229,14 @@ class _BodyState extends State<Body> {
     );
   }
 
-
   void onSaveFavourite() {
     final dataFields = _formKey.currentState!.fields;
     final description = dataFields["description_field"]!.value;
     print(description);
+    //added to local storage and firebase here
     setState(() {
+      _description = description;
+      _addedToFavourite = true;
       Navigator.pop(context);
     });
   }
