@@ -92,15 +92,17 @@ class Background extends StatelessWidget {
               Visibility(
                 child: TextButton(
                   onPressed: () {
-                    LoginFirebase().signUserOut();
-                    Navigator.pushAndRemoveUntil<dynamic>(
-                      context,
-                      MaterialPageRoute<dynamic>(
-                        builder: (BuildContext context) => WelcomeScreen(),
-                      ),
-                      (route) =>
-                          false, //if you want to disable back feature set to false
-                    );
+                    LoginFirebase().signUserOut().then((value){
+                      Navigator.pushAndRemoveUntil<dynamic>(
+                        context,
+                        MaterialPageRoute<dynamic>(
+                          builder: (BuildContext context) => WelcomeScreen(),
+                        ),
+                            (route) =>
+                        false, //if you want to disable back feature set to false
+                      );
+                    });
+
                   },
                   child: Row(
                     children: const <Widget>[

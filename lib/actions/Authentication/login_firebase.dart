@@ -30,8 +30,8 @@ class LoginFirebase {
     return FirebaseAuth.instance.idTokenChanges();
   }
 
-  signUserOut() async {
-    await FirebaseAuth.instance.signOut();
+  signUserOut() {
+    return FirebaseAuth.instance.signOut();
   }
 
   _loginSnackBar(String message) {
