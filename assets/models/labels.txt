@@ -1,6 +1,6 @@
 Bacterial Blight
-Brown Streak Disease
+Brown Streak
 Green Mite
-Mosaic Disease
+Mosaic
 Healthy
 Unknown

@@ -53,10 +53,12 @@ class _BodyState extends State<Body> {
   }
 
   pickImage() async {
-
     XFile? image = await picker.pickImage(source: ImageSource.camera);
     if (image == null) return null;
-    String newFilePath = await getFilePathWithGeneratedFileName("jpg",withUnixTime: true) ;
+    String newFilePath = await getFilePathWithGeneratedFileName(
+      "jpg",
+      withUnixTime: true,
+    );
     print("***************** file path ********************");
     print(newFilePath);
     File(image.path).copy(newFilePath).then((savedImage) {
@@ -66,7 +68,6 @@ class _BodyState extends State<Body> {
       classifyImage(_image);
     });
     classifyImage(_image);
-
   }
 
   pickGalleryImage() async {
@@ -93,13 +94,37 @@ class _BodyState extends State<Body> {
           children: <Widget>[
             TopButtonBar(),
             imagePreviewWidget(),
-            RoundedButton(text: "Take A Photo", press: pickImage),
-            RoundedButton(
-              text: "Pick From Gallery",
-              color: kPrimaryLightColor,
-              textColor: Colors.black,
-              press: pickGalleryImage,
-            ),
+            Row(children: <Widget>[
+              SizedBox(width: size.width * 0.1),
+              SizedBox(
+                  width: size.width * 0.2,
+                  child: ElevatedButton(
+                    onPressed: pickImage,
+                    child: const Icon(Icons.camera_alt, size: 35),
+                    style: ButtonStyle(
+                      shape: MaterialStateProperty.all(CircleBorder()),
+                      padding: MaterialStateProperty.all(EdgeInsets.all(10)),
+                      backgroundColor: MaterialStateProperty.all(
+                          kPrimaryLightColor), // <-- Button color
+                      overlayColor:
+                          MaterialStateProperty.resolveWith<Color?>((states) {
+                        if (states.contains(MaterialState.pressed))
+                          return kPrimaryCancelColor; // <-- Splash color
+                      }),
+                    ),
+                  )),
+              SizedBox(width: size.width * 0.1),
+              SizedBox(
+                  width: size.width * 0.5,
+                  child: RoundedButton(
+                    text: "Pick From Gallery",
+                    color: kPrimaryLightColor,
+                    textColor: Colors.black,
+                    press: pickGalleryImage,
+                    width: size.width * 0.5,
+                  )),
+              SizedBox(width: size.width * 0.1),
+            ]),
             RoundedButton(
               text: "My Predictions",
               color: kPrimaryLightColor,
@@ -123,7 +148,7 @@ class _BodyState extends State<Body> {
 
   Widget imagePreviewWidget() {
     //show nothing if no picture selected
-    if (_noImageSelected || _image==null) {
+    if (_noImageSelected || _image == null) {
       return Container();
     }
 
@@ -131,7 +156,7 @@ class _BodyState extends State<Body> {
       child: Column(
         children: [
           Container(
-            height: size.height * 0.55,
+            height: size.height * 0.6,
             child: OverflowBox(
                 minWidth: 0.0,
                 minHeight: 0.0,
@@ -142,16 +167,31 @@ class _BodyState extends State<Body> {
                 )),
           ),
           SizedBox(
-            height: 10,
+            height: 5,
           ),
-          Text(
-            '${_output[0]['label']}',
-            style: TextStyle(
-              color: Colors.black,
-              fontSize: 30,
-              fontWeight: FontWeight.w600,
+          Row(children: <Widget>[
+            SizedBox(width: size.width * 0.1),
+            SizedBox(
+              width: size.width * 0.6,
+              child: Text(
+                '${_output[0]['label']}',
+                textAlign: TextAlign.left,
+                style: const TextStyle(
+                    color: Colors.black,
+                    fontSize: 35,
+                    fontWeight: FontWeight.w600),
+              ),
             ),
-          ),
+            SizedBox(width: size.width * 0.1),
+            SizedBox(
+                width: size.width * 0.1,
+                child: IconButton(
+                  icon: Icon(Icons.favorite_border,
+                      size: 36, color: kPrimaryColor),
+                  onPressed: () {},
+                )),
+            SizedBox(width: size.width * 0.1),
+          ]),
           SizedBox(
             height: 10,
           ),
@@ -159,6 +199,4 @@ class _BodyState extends State<Body> {
       ),
     );
   }
-
-
 }
