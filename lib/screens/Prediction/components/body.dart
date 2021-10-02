@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:casslab/classifiers/classifier.dart';
+import 'package:casslab/components/add_to_favorites_dialog.dart';
 import 'package:casslab/components/rounded_button.dart';
 import 'package:casslab/components/top_button_bar.dart';
 import 'package:casslab/constants.dart';
@@ -8,6 +9,7 @@ import 'package:casslab/helpers/helpers.dart';
 import 'package:casslab/screens/List/list_screen.dart';
 import 'package:casslab/screens/Prediction/components/background.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:image_picker/image_picker.dart';
 
 class Body extends StatefulWidget {
@@ -26,6 +28,7 @@ class _BodyState extends State<Body> {
   final picker = ImagePicker();
   Classifier classifier;
   late Size size;
+  final GlobalKey<FormBuilderState> _formKey = GlobalKey<FormBuilderState>();
 
   _BodyState(this.classifier);
 
@@ -149,7 +152,9 @@ class _BodyState extends State<Body> {
   Widget imagePreviewWidget() {
     //show nothing if no picture selected
     if (_noImageSelected || _image == null) {
-      return Container();
+      return Container(
+        height: size.height * 0.6,
+      );
     }
 
     return Center(
@@ -166,7 +171,7 @@ class _BodyState extends State<Body> {
                   fit: BoxFit.cover,
                 )),
           ),
-          SizedBox(
+          const SizedBox(
             height: 5,
           ),
           Row(children: <Widget>[
@@ -188,15 +193,38 @@ class _BodyState extends State<Body> {
                 child: IconButton(
                   icon: Icon(Icons.favorite_border,
                       size: 36, color: kPrimaryColor),
-                  onPressed: () {},
+                  onPressed: () {
+                    AddToFavoritesDialog(
+                      context,
+                      _formKey,
+                      onSaveFavourite,
+                      onCancelFavouriteDialog,
+                    ).displayAddToFavoritesDialog();
+                  },
                 )),
             SizedBox(width: size.width * 0.1),
           ]),
-          SizedBox(
+          const SizedBox(
             height: 10,
           ),
         ],
       ),
     );
+  }
+
+
+  void onSaveFavourite() {
+    final dataFields = _formKey.currentState!.fields;
+    final description = dataFields["description_field"]!.value;
+    print(description);
+    setState(() {
+      Navigator.pop(context);
+    });
+  }
+
+  void onCancelFavouriteDialog() {
+    setState(() {
+      Navigator.pop(context);
+    });
   }
 }
