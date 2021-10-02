@@ -6,30 +6,10 @@ import 'package:casslab/screens/Prediction/prediction_screen.dart';
 import 'package:casslab/screens/Welcome/components/background.dart';
 import 'package:flutter/material.dart';
 
-class Body extends StatefulWidget {
-  const Body({
+class Body extends StatelessWidget {
+  Body({
     Key? key,
   }) : super(key: key);
-
-  @override
-  BodyState createState() {
-    return BodyState();
-  }
-}
-
-class BodyState extends State<Body> {
-  bool _userLoggedIn = false;
-  BodyState();
-  @override
-  void initState() {
-    LoginFirebase().checkUserIsLoggedIn().listen((user) {
-
-      setState(() {
-        _userLoggedIn = !(user == null);
-      });
-    });
-    super.initState();
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -59,27 +39,40 @@ class BodyState extends State<Body> {
                 );
               },
             ),
-            Visibility(
-              child: RoundedButton(
-                text: "LOGIN/REGISTER",
-                color: kPrimaryLightColor,
-                textColor: Colors.black,
-                press: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) {
-                        return LoginScreen();
-                      },
-                    ),
-                  );
-                },
-              ),
-              visible: !_userLoggedIn,
-            )
+            loginButtonWidget()
           ],
         ),
       ),
     );
+  }
+
+  Widget loginButtonWidget(){
+
+     return FutureBuilder(
+      future: LoginFirebase().checkUserIsLoggedIn().first,
+      builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
+        bool _userLoggedIn = !(snapshot.data == null);
+        return Visibility(
+          child: RoundedButton(
+            text: "LOGIN/REGISTER",
+            color: kPrimaryLightColor,
+            textColor: Colors.black,
+            press: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) {
+                    return LoginScreen();
+                  },
+                ),
+              );
+            },
+          ),
+          visible: !_userLoggedIn,
+        );
+      },
+    );
+
+
   }
 }
