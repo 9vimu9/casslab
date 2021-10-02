@@ -53,8 +53,7 @@ class _BodyState extends State<Body> {
   }
 
   pickImage() async {
-    print("********************start time***************");
-    print(DateTime.now());
+
     XFile? image = await picker.pickImage(source: ImageSource.camera);
     if (image == null) return null;
     String newFilePath = await getFilePathWithGeneratedFileName("jpg",withUnixTime: true) ;
@@ -67,8 +66,7 @@ class _BodyState extends State<Body> {
       classifyImage(_image);
     });
     classifyImage(_image);
-    print("********************end time***************");
-    print(DateTime.now());
+
   }
 
   pickGalleryImage() async {
