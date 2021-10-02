@@ -21,7 +21,7 @@ abstract class Classifier{
     Tflite.close();
   }
 
-  Future<List> classifyImage(File image);
+  Future<List> classifyImage(File? image);
 
 
 }

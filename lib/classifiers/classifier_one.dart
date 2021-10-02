@@ -19,26 +19,39 @@ class ClassifierOne extends Classifier {
   ClassifierOne() : super(MODEL_PATH, LABELS_PATH);
 
   @override
-  Future<List> classifyImage(File image) async {
-    img.Image oriImage = img.decodeJpg(image.readAsBytesSync());
+  Future<List> classifyImage(File? image) async {
 
-    img.Image resizedImage = img.copyResize(
-      oriImage,
-      height: IMAGE_SIZE,
-      width: IMAGE_SIZE,
-    );
+    List<dynamic>? output;
+    if(image != null){
+      img.Image oriImage = img.decodeJpg(image.readAsBytesSync());
 
-    var output = await Tflite.runModelOnBinary(
-        binary: _imageToByteListFloat32(resizedImage, IMAGE_SIZE, MEAN, STD),
-        numResults: NUMBER_OF_CLASSES,
-        threshold: THRESHOLD,
-        asynch: true);
+      img.Image resizedImage = img.copyResize(
+        oriImage,
+        height: IMAGE_SIZE,
+        width: IMAGE_SIZE,
+      );
+
+      output = await Tflite.runModelOnBinary(
+          binary: _imageToByteListFloat32(resizedImage, IMAGE_SIZE, MEAN, STD),
+          numResults: NUMBER_OF_CLASSES,
+          threshold: THRESHOLD,
+          asynch: true);
+    }
+
 
     if (output == null || output.isEmpty) {
       output = [
         {"label": UNKNOWN_LABEL}
       ];
     }
+
+    print("*****************************************************OUTPUT*******************************");
+    print(output);
+
+    if(output.length > 1 && output[0]["index"] == 5 ){
+      output = [output[1]];
+    }
+
     return output;
   }
 

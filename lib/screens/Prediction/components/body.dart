@@ -3,10 +3,12 @@ import 'dart:io';
 import 'package:casslab/classifiers/classifier.dart';
 import 'package:casslab/components/rounded_button.dart';
 import 'package:casslab/constants.dart';
+import 'package:casslab/helpers/helpers.dart';
 import 'package:casslab/screens/List/list_screen.dart';
 import 'package:casslab/screens/Prediction/components/background.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:path_provider/path_provider.dart';
 
 class Body extends StatefulWidget {
   Classifier classifier;
@@ -19,7 +21,7 @@ class Body extends StatefulWidget {
 
 class _BodyState extends State<Body> {
   bool _noImageSelected = true;
-  late File _image;
+  File? _image;
   late List _output;
   final picker = ImagePicker();
   Classifier classifier;
@@ -41,7 +43,7 @@ class _BodyState extends State<Body> {
     classifier.closeModel();
   }
 
-  classifyImage(File image) async {
+  classifyImage(File? image) async {
     List output = await classifier.classifyImage(image);
     //[{confidence: 0.8950297236442566, index: 2, label: Green Mite}]
     setState(() {
@@ -51,14 +53,22 @@ class _BodyState extends State<Body> {
   }
 
   pickImage() async {
-    //this function to grab the image from camera
-    var image = await picker.pickImage(source: ImageSource.camera);
+    print("********************start time***************");
+    print(DateTime.now());
+    XFile? image = await picker.pickImage(source: ImageSource.camera);
     if (image == null) return null;
-
-    setState(() {
-      _image = File(image.path);
+    String newFilePath = await getFilePathWithGeneratedFileName("jpg",withUnixTime: true) ;
+    print("***************** file path ********************");
+    print(newFilePath);
+    File(image.path).copy(newFilePath).then((savedImage) {
+      setState(() {
+        _image = savedImage;
+      });
+      classifyImage(_image);
     });
     classifyImage(_image);
+    print("********************end time***************");
+    print(DateTime.now());
   }
 
   pickGalleryImage() async {
@@ -78,7 +88,6 @@ class _BodyState extends State<Body> {
   @override
   Widget build(BuildContext context) {
     size = MediaQuery.of(context).size;
-    // This size provide us total height and width of our screen
     return Background(
       child: SingleChildScrollView(
         child: Column(
@@ -116,7 +125,7 @@ class _BodyState extends State<Body> {
 
   Widget imagePreviewWidget() {
     //show nothing if no picture selected
-    if (_noImageSelected) {
+    if (_noImageSelected || _image==null) {
       return Container();
     }
 
@@ -130,7 +139,7 @@ class _BodyState extends State<Body> {
                 minHeight: 0.0,
                 maxWidth: double.infinity,
                 child: Image.file(
-                  _image,
+                  _image!,
                   fit: BoxFit.cover,
                 )),
           ),
