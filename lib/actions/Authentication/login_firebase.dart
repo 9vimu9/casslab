@@ -5,21 +5,23 @@ class LoginFirebase {
   Future<bool> checkLoginAttemptIsCorrect(String email, String password) async {
     try {
       await FirebaseAuth.instance.signInWithEmailAndPassword(
-        email: email,
+        email: email.trim(),
         password: password,
       );
       return true;
     } on FirebaseAuthException catch (e) {
+      String message = e.code;
       if (e.code == 'user-not-found') {
-        showInSnackBar('No user found for that email.',
-            title: "Authentication");
+        message = 'No user found for that email.';
       } else if (e.code == 'wrong-password') {
-        showInSnackBar('Wrong password provided for that user.',
-            title: "Authentication");
+        message = 'Wrong password provided for that user.';
+      } else if (e.code == 'invalid-email') {
+        message = "invalid email was provided";
       }
+      _loginSnackBar(message);
       return false;
     } catch (e) {
-      showInSnackBar('something went wrong', title: "Authentication");
+      _loginSnackBar('Something went wrong.');
       return false;
     }
   }
@@ -30,5 +32,9 @@ class LoginFirebase {
 
   signUserOut() async {
     await FirebaseAuth.instance.signOut();
+  }
+
+  _loginSnackBar(String message) {
+    showInSnackBar(message, title: "Authentication");
   }
 }
