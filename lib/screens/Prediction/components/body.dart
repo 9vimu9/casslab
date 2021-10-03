@@ -87,9 +87,7 @@ class _BodyState extends State<Body> {
     classifyImage(_image);
   }
 
-  showPreviousPredictionsPage() {
-    return null;
-  }
+
 
   @override
   Widget build(BuildContext context) {
