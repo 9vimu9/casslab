@@ -17,12 +17,12 @@ class TopButtonBar extends StatelessWidget {
       builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
         bool _userLoggedIn = !(snapshot.data == null);
         return Container(
-          padding: EdgeInsets.only(top: 20),
+          // padding: EdgeInsets.only(top: 20),
           child: Row(
             children: [
               Image.asset(
                 "assets/icons/casslab_min_space.png",
-                height: 30,
+                height: 40,
               ),
               Spacer(),
               Visibility(

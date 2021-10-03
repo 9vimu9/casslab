@@ -96,9 +96,18 @@ class _BodyState extends State<Body> {
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
       children: <Widget>[
-        TopButtonBar(),
-        predictionWidget(),
-        actionButtonsBar(),
+        Flexible(
+          child: TopButtonBar(),
+          flex: 1,
+        ),
+        Flexible(
+          child: predictionWidget(),
+          flex: 8,
+        ),
+        Flexible(
+          child: actionButtonsBar(),
+          flex: 3,
+        ),
       ],
 
       // ),// removing background
@@ -162,17 +171,15 @@ class _BodyState extends State<Body> {
   Widget predictionWidget() {
     //show nothing if no picture selected
     if (_noImageSelected || _image == null) {
-      return Container(
-        height: size.height * 0.65,
-      );
+      return Container();
     }
 
     return Center(
       child: Column(
         children: [
           descriptionBar(),
-          imagePreview(),
-          predictionLabelBar(),
+          Flexible(child: imagePreview(), flex: 12),
+          Flexible(child: predictionLabelBar(), flex: 1),
         ],
       ),
     );
@@ -180,47 +187,49 @@ class _BodyState extends State<Body> {
 
   Widget descriptionBar() {
     return _addedToFavourite
-        ? Row(
-            children: <Widget>[
-              SizedBox(width: size.width * 0.05),
-              SizedBox(
-                width: size.width * 0.8,
-                child: Container(
-                    child: Text(
-                  '${_description}',
-                  textAlign: TextAlign.left,
-                  style: const TextStyle(
-                      color: Colors.black,
-                      fontSize: 20,
-                      fontWeight: FontWeight.w600),
-                )),
-              ),
-              SizedBox(
-                width: size.width * 0.1,
-                child: IconButton(
-                  icon: const Icon(Icons.edit, color: kPrimaryColor),
-                  onPressed: () {
-                    AddToFavoritesDialog(
-                      _description,
-                      context,
-                      _formKey,
-                      onSaveFavourite,
-                      onCancelFavouriteDialog,
-                    ).displayAddToFavoritesDialog();
-                  },
+        ? Container(
+            child: Row(
+              children: <Widget>[
+                SizedBox(width: size.width * 0.05),
+                SizedBox(
+                  width: size.width * 0.8,
+                  child: Container(
+                      child: Text(
+                    '${_description}',
+                    textAlign: TextAlign.left,
+                    style: const TextStyle(
+                        color: Colors.black,
+                        fontSize: 20,
+                        fontWeight: FontWeight.w600),
+                  )),
                 ),
-              ),
-              SizedBox(
-                width: size.width * 0.05,
-              ),
-            ],
+                SizedBox(
+                  width: size.width * 0.1,
+                  child: IconButton(
+                    icon: const Icon(Icons.edit, color: kPrimaryColor),
+                    onPressed: () {
+                      AddToFavoritesDialog(
+                        _description,
+                        context,
+                        _formKey,
+                        onSaveFavourite,
+                        onCancelFavouriteDialog,
+                      ).displayAddToFavoritesDialog();
+                    },
+                  ),
+                ),
+                SizedBox(
+                  width: size.width * 0.05,
+                ),
+              ],
+            ),
+            padding: const EdgeInsets.only(bottom: 5),
           )
         : Container();
   }
 
   Widget imagePreview() {
     return Container(
-      height: size.height * 0.55,
       child: OverflowBox(
           minWidth: 0.0,
           minHeight: 0.0,
