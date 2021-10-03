@@ -115,56 +115,59 @@ class _BodyState extends State<Body> {
   }
 
   Widget actionButtonsBar() {
-    return Column(
-      children: [
-        Row(children: <Widget>[
-          SizedBox(width: size.width * 0.1),
-          SizedBox(
-              width: size.width * 0.2,
-              child: ElevatedButton(
-                onPressed: pickImage,
-                child: const Icon(Icons.camera_alt, size: 35),
-                style: ButtonStyle(
-                  shape: MaterialStateProperty.all(CircleBorder()),
-                  padding: MaterialStateProperty.all(EdgeInsets.all(10)),
-                  backgroundColor: MaterialStateProperty.all(
-                      kPrimaryLightColor), // <-- Button color
-                  overlayColor:
-                      MaterialStateProperty.resolveWith<Color?>((states) {
-                    if (states.contains(MaterialState.pressed))
-                      return kPrimaryCancelColor; // <-- Splash color
-                  }),
-                ),
-              )),
-          SizedBox(width: size.width * 0.1),
-          SizedBox(
-              width: size.width * 0.5,
-              child: RoundedButton(
-                text: "Pick From Gallery",
-                color: kPrimaryLightColor,
-                textColor: Colors.black,
-                press: pickGalleryImage,
+    return Container(
+      child: Column(
+        children: [
+          Row(children: <Widget>[
+            SizedBox(width: size.width * 0.1),
+            SizedBox(
+                width: size.width * 0.2,
+                child: ElevatedButton(
+                  onPressed: pickImage,
+                  child: const Icon(Icons.camera_alt, size: 35),
+                  style: ButtonStyle(
+                    shape: MaterialStateProperty.all(CircleBorder()),
+                    padding: MaterialStateProperty.all(EdgeInsets.all(10)),
+                    backgroundColor: MaterialStateProperty.all(
+                        kPrimaryLightColor), // <-- Button color
+                    overlayColor:
+                        MaterialStateProperty.resolveWith<Color?>((states) {
+                      if (states.contains(MaterialState.pressed))
+                        return kPrimaryCancelColor; // <-- Splash color
+                    }),
+                  ),
+                )),
+            SizedBox(width: size.width * 0.1),
+            SizedBox(
                 width: size.width * 0.5,
-              )),
-          SizedBox(width: size.width * 0.1),
-        ]),
-        RoundedButton(
-          text: "My Predictions",
-          color: kPrimaryLightColor,
-          textColor: Colors.black,
-          press: () {
-            Navigator.push(
-              context,
-              MaterialPageRoute(
-                builder: (context) {
-                  return ListScreen();
-                },
-              ),
-            );
-          },
-        ),
-      ],
-      mainAxisAlignment: MainAxisAlignment.center,
+                child: RoundedButton(
+                  text: "Pick From Gallery",
+                  color: kPrimaryLightColor,
+                  textColor: Colors.black,
+                  press: pickGalleryImage,
+                  width: size.width * 0.5,
+                )),
+            SizedBox(width: size.width * 0.1),
+          ]),
+          RoundedButton(
+            text: "My Predictions",
+            color: kPrimaryLightColor,
+            textColor: Colors.black,
+            press: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) {
+                    return ListScreen();
+                  },
+                ),
+              );
+            },
+          ),
+        ],
+        mainAxisAlignment: MainAxisAlignment.center,
+      ),
+      padding: const EdgeInsets.only(top: 10),
     );
   }
 
@@ -200,7 +203,7 @@ class _BodyState extends State<Body> {
                     style: const TextStyle(
                         color: Colors.black,
                         fontSize: 20,
-                        fontWeight: FontWeight.w600),
+                        fontWeight: FontWeight.normal),
                   )),
                 ),
                 SizedBox(
