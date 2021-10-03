@@ -7,7 +7,7 @@ import 'package:casslab/components/rounded_button.dart';
 import 'package:casslab/components/top_button_bar.dart';
 import 'package:casslab/constants.dart';
 import 'package:casslab/helpers/helpers.dart';
-import 'package:casslab/screens/List/list_screen.dart';
+import 'package:casslab/screens/Favourites/favourites_screen.dart';
 
 // import 'package:casslab/screens/Prediction/components/background.dart'; // removing background
 import 'package:flutter/material.dart';
@@ -152,7 +152,7 @@ class _BodyState extends State<Body> {
             SizedBox(width: size.width * 0.1),
           ]),
           RoundedButton(
-            text: "My Predictions",
+            text: "My Favourites",
             color: kPrimaryLightColor,
             textColor: Colors.black,
             press: () {
@@ -160,7 +160,7 @@ class _BodyState extends State<Body> {
                 context,
                 MaterialPageRoute(
                   builder: (context) {
-                    return ListScreen();
+                    return FavouritesScreen();
                   },
                 ),
               );
