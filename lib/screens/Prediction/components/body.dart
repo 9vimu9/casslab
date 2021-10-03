@@ -205,9 +205,35 @@ class _BodyState extends State<Body> {
                     if (_addedToFavourite) {
                       // remove from favourite list
                       // ask question before do that
-                      setState(() {
-                        _addedToFavourite = false;
+
+                      var result = showDialog<String>(
+                        context: context,
+                        builder: (BuildContext context) => AlertDialog(
+                          title: const Text('Removing from favourites'),
+                          content: const Text('Do you really want to this remove from favourites ?'),
+                          elevation: 24,
+                          actions: <Widget>[
+                            TextButton(
+                              onPressed: () => Navigator.pop(context, favouritesDoNotRemove),
+                              child: const Text('No, Keep it'),
+                            ),
+                            TextButton(
+                              onPressed: () => Navigator.pop(context, favouritesRemove),
+                              child: const Text('Yes, Remove it'),
+                            ),
+                          ],
+                        ),
+                      );
+                      result.then((userDecision) {
+                        if(userDecision == favouritesRemove){
+                          setState(() {
+                            _addedToFavourite = false;
+                          });
+                        }
                       });
+
+
+
                     } else {
                       AddToFavoritesDialog(
                         _description,
@@ -231,7 +257,7 @@ class _BodyState extends State<Body> {
 
   void onSaveFavourite() {
     final dataFields = _formKey.currentState!.fields;
-    final description = dataFields["description_field"]!.value;
+    final description = dataFields[favouritesDescriptionFieldName]!.value;
     print(description);
     //added to local storage and firebase here
     setState(() {

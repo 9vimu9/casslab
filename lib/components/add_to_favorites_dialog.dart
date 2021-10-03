@@ -34,7 +34,7 @@ class AddToFavoritesDialog {
                 const EdgeInsets.only(left: 10, right: 10, top: 0),
                 title: const Text('Add to Favorites'),
                 content: RoundedInputField(
-                  name: 'description_field',
+                  name: favouritesDescriptionFieldName,
                   minLines: 5,
                   hintText: "add a short description...",
                   onChanged: (value) {},
