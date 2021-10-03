@@ -7,7 +7,8 @@ import 'package:casslab/components/top_button_bar.dart';
 import 'package:casslab/constants.dart';
 import 'package:casslab/helpers/helpers.dart';
 import 'package:casslab/screens/List/list_screen.dart';
-import 'package:casslab/screens/Prediction/components/background.dart';
+
+// import 'package:casslab/screens/Prediction/components/background.dart'; // removing background
 import 'package:flutter/material.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:image_picker/image_picker.dart';
@@ -87,23 +88,20 @@ class _BodyState extends State<Body> {
     classifyImage(_image);
   }
 
-
-
   @override
   Widget build(BuildContext context) {
     size = MediaQuery.of(context).size;
     // return Background(//removing background
     //   child: Column(//removing background
-      return Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: <Widget>[
-          TopButtonBar(),
-          predictionWidget(),
-          actionButtonsBar(),
-        ],
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: <Widget>[
+        TopButtonBar(),
+        predictionWidget(),
+        actionButtonsBar(),
+      ],
 
       // ),// removing background
-
     );
   }
 
@@ -123,7 +121,7 @@ class _BodyState extends State<Body> {
                   backgroundColor: MaterialStateProperty.all(
                       kPrimaryLightColor), // <-- Button color
                   overlayColor:
-                  MaterialStateProperty.resolveWith<Color?>((states) {
+                      MaterialStateProperty.resolveWith<Color?>((states) {
                     if (states.contains(MaterialState.pressed))
                       return kPrimaryCancelColor; // <-- Splash color
                   }),
