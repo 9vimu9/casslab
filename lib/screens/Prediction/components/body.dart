@@ -92,15 +92,18 @@ class _BodyState extends State<Body> {
   @override
   Widget build(BuildContext context) {
     size = MediaQuery.of(context).size;
-    return Background(
-      child: Column(
+    // return Background(//removing background
+    //   child: Column(//removing background
+      return Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
           TopButtonBar(),
           predictionWidget(),
           actionButtonsBar(),
         ],
-      ),
+
+      // ),// removing background
+
     );
   }
 
