@@ -62,8 +62,8 @@ class _BodyState extends State<Body> {
     });
   }
 
-  pickImage() async {
-    XFile? image = await picker.pickImage(source: ImageSource.camera);
+  getImageFrom(ImageSource imageSource) async {
+    XFile? image = await picker.pickImage(source: imageSource);
     if (image == null) return null;
     String newFilePath = await getFilePathWithGeneratedFileName(
       "jpg",
@@ -77,17 +77,6 @@ class _BodyState extends State<Body> {
       });
       classifyImage(_image);
     });
-    classifyImage(_image);
-  }
-
-  pickGalleryImage() async {
-    var image = await picker.pickImage(source: ImageSource.gallery);
-    if (image == null) return null;
-
-    setState(() {
-      _image = File(image.path);
-    });
-    classifyImage(_image);
   }
 
   @override
@@ -125,7 +114,7 @@ class _BodyState extends State<Body> {
             SizedBox(
                 width: size.width * 0.2,
                 child: ElevatedButton(
-                  onPressed: pickImage,
+                  onPressed:()=> getImageFrom(ImageSource.camera),
                   child: const Icon(Icons.camera_alt, size: 35),
                   style: ButtonStyle(
                     shape: MaterialStateProperty.all(CircleBorder()),
@@ -146,7 +135,7 @@ class _BodyState extends State<Body> {
                   text: "Pick From Gallery",
                   color: kPrimaryLightColor,
                   textColor: Colors.black,
-                  press: pickGalleryImage,
+                  press:()=> getImageFrom(ImageSource.gallery),
                   width: size.width * 0.5,
                 )),
             SizedBox(width: size.width * 0.1),
