@@ -1,5 +1,7 @@
 import 'dart:io';
 
+import 'package:casslab/actions/Favourites/adding_to_favourites.dart';
+import 'package:casslab/actions/Favourites/removing_from_favourites.dart';
 import 'package:casslab/classifiers/classifier.dart';
 import 'package:casslab/components/add_to_favorites_dialog.dart';
 import 'package:casslab/components/rounded_button.dart';
@@ -27,7 +29,7 @@ class _BodyState extends State<Body> {
   bool _addedToFavourite = false;
   File? _image;
   String? _description;
-  late List _output;
+  late String _output;
   final picker = ImagePicker();
   Classifier classifier;
   late Size size;
@@ -50,8 +52,7 @@ class _BodyState extends State<Body> {
   }
 
   classifyImage(File? image) async {
-    List output = await classifier.classifyImage(image);
-    //[{confidence: 0.8950297236442566, index: 2, label: Green Mite}]
+    String output = await classifier.classifyImage(image);
     setState(() {
       _output = output;
       _noImageSelected = false;
@@ -250,7 +251,7 @@ class _BodyState extends State<Body> {
       SizedBox(
         width: size.width * 0.6,
         child: Text(
-          '${_output[0]['label']}',
+          _output,
           textAlign: TextAlign.left,
           style: const TextStyle(
               color: Colors.black, fontSize: 35, fontWeight: FontWeight.w600),

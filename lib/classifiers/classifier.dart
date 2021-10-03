@@ -7,8 +7,9 @@ abstract class Classifier{
 
   final String classifierPath;
   final String labelsPath;
+  List<Map<String, String>> classes;
 
-  Classifier(this.classifierPath, this.labelsPath);
+  Classifier(this.classifierPath, this.labelsPath,this.classes);
 
   loadModel() async {
     await Tflite.loadModel(
@@ -21,7 +22,7 @@ abstract class Classifier{
     Tflite.close();
   }
 
-  Future<List> classifyImage(File? image);
+  Future<String> classifyImage(File? image);
 
 
 }

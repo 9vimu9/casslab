@@ -1,6 +1,6 @@
-Bacterial Blight
-Brown Streak
-Green Mite
-Mosaic
-Healthy
-Unknown
+0
+1
+2
+3
+4
+5

@@ -10,17 +10,25 @@ const int NUMBER_OF_CLASSES = 6;
 const double THRESHOLD = 0.1;
 const double MEAN = 127.5;
 const double STD = 127.5;
-const String UNKNOWN_LABEL = "unknown";
+const Map<String, String> UNKNOWN_CLASS = {"label": "Unknown", "class": "5"};
 
 const String MODEL_PATH = "assets/models/model.tflite";
 const String LABELS_PATH = "assets/models/labels.txt";
 
+const List<Map<String, String>> CLASSES = [
+  {"label": "Bacterial Blight", "class": "0"},
+  {"label": "Brown Streak", "class": "1"},
+  {"label": "Green Mite", "class": "2"},
+  {"label": "Mosaic", "class": "3"},
+  {"label": "Healthy", "class": "4"},
+  UNKNOWN_CLASS,
+];
+
 class ClassifierOne extends Classifier {
-  ClassifierOne() : super(MODEL_PATH, LABELS_PATH);
+  ClassifierOne() : super(MODEL_PATH, LABELS_PATH, CLASSES);
 
   @override
-  Future<List> classifyImage(File? image) async {
-
+  Future<String> classifyImage(File? image) async {
     List<dynamic>? output;
     if(image != null){
       img.Image oriImage = img.decodeJpg(image.readAsBytesSync());
@@ -38,21 +46,18 @@ class ClassifierOne extends Classifier {
           asynch: true);
     }
 
-
     if (output == null || output.isEmpty) {
-      output = [
-        {"label": UNKNOWN_LABEL}
-      ];
+      output = [UNKNOWN_CLASS];
     }
 
-    print("*****************************************************OUTPUT*******************************");
+    print("********************OUTPUT***********************");
     print(output);
 
-    if(output.length > 1 && output[0]["index"] == 5 ){
+    if (output.length > 1 && output[0]["index"].toString() == UNKNOWN_CLASS["class"]) {
       output = [output[1]];
     }
 
-    return output;
+    return _getLabelFromValue(output[0]["label"]);
   }
 
   Uint8List _imageToByteListFloat32(
@@ -69,6 +74,15 @@ class ClassifierOne extends Classifier {
       }
     }
     return convertedBytes.buffer.asUint8List();
+  }
+
+  String _getLabelFromValue(String className) {
+    for (var mlClass in CLASSES) {
+      if (mlClass["class"] == className) {
+        return mlClass["label"]!;
+      }
+    }
+    return UNKNOWN_CLASS["label"]!;
   }
 }
 /*
