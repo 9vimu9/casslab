@@ -1,4 +1,5 @@
 import 'package:casslab/actions/Authentication/login_firebase.dart';
+import 'package:casslab/components/top_button_bar.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
@@ -21,12 +22,12 @@ class Background extends StatelessWidget {
       child: Stack(
         alignment: Alignment.center,
         children: <Widget>[
+          TopButtonBar(),
           child,
         ],
       ),
     );
   }
 
-  final Future<User?> user = LoginFirebase().checkUserIsLoggedIn().first;
 
 }
