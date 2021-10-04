@@ -1,5 +1,5 @@
+import 'package:casslab/Model/favourite_firebase.dart';
 import 'package:casslab/Model/favourite_local.dart';
-import 'package:casslab/actions/Authentication/login_firebase.dart';
 import 'package:casslab/actions/FirebaseStorage/add_image.dart';
 import 'package:casslab/actions/FirebaseStorage/remove_image.dart';
 import 'package:casslab/actions/LocalStorage/favourite_local_storage_repository.dart';
@@ -9,8 +9,8 @@ import 'package:firebase_auth/firebase_auth.dart';
 const key = "favourites";
 
 class FavouriteFirestoreRepository {
-
   User user;
+
   FavouriteFirestoreRepository(this.user);
 
   add(
@@ -20,7 +20,6 @@ class FavouriteFirestoreRepository {
     int dateTaken,
     String favouriteID,
   ) async {
-
     String? referenceImagePath = await AddImage(imagePath).action();
 
     await FirebaseFirestore.instance.collection(key).add({
@@ -55,11 +54,6 @@ class FavouriteFirestoreRepository {
   }
 
   Future<QueryDocumentSnapshot<Object?>?> find(String id) async {
-    User? user = await LoginFirebase().getFireBaseUser();
-    if (user == null) {
-      return null;
-    }
-
     CollectionReference favourites = FirebaseFirestore.instance.collection(key);
     QuerySnapshot<Object?> querySnapshot =
         await favourites.where("id", isEqualTo: id).get();
@@ -88,7 +82,6 @@ class FavouriteFirestoreRepository {
   }
 
   syncData() async {
-
     List<FavouriteLocal> localFavourites =
         await FavouriteLocalStorageRepository().all();
     for (FavouriteLocal localFavourite in localFavourites) {
@@ -104,5 +97,40 @@ class FavouriteFirestoreRepository {
         );
       }
     }
+  }
+
+  Future<List<FavouriteFirebase>> all() async {
+    await syncData();
+
+    CollectionReference favourites = FirebaseFirestore.instance.collection(key);
+    QuerySnapshot<Object?> querySnapshot = await favourites.where("user_id", isEqualTo: user.uid).get();
+    List<QueryDocumentSnapshot<Object?>> queryDocumentSnapshots = querySnapshot.docs;
+
+    List<FavouriteFirebase> firebaseFavourites = [];
+
+    if (queryDocumentSnapshots.isEmpty) {
+      return firebaseFavourites;
+    }
+
+    for (QueryDocumentSnapshot<Object?>? queryDocumentSnapshot in queryDocumentSnapshots) {
+
+      if (queryDocumentSnapshot == null) {
+        continue;
+      }
+
+      FavouriteFirebase firebaseFavourite = FavouriteFirebase(
+        queryDocumentSnapshot["description"],
+        queryDocumentSnapshot["prediction"],
+        queryDocumentSnapshot["image_path"],
+        queryDocumentSnapshot["local_image_path"],
+        queryDocumentSnapshot["reference_image_path"],
+        queryDocumentSnapshot["id"],
+        queryDocumentSnapshot["user_id"],
+        queryDocumentSnapshot["date_taken"],
+      );
+      firebaseFavourites.add(firebaseFavourite);
+    }
+
+    return firebaseFavourites;
   }
 }

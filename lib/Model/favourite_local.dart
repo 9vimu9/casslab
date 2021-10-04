@@ -1,3 +1,5 @@
+import 'package:casslab/Model/favourite.dart';
+
 class FavouriteLocal {
   String _description;
 
@@ -38,6 +40,17 @@ class FavouriteLocal {
       'date_taken': _dateTaken,
       'id': _id,
     };
+  }
+
+  Future<Favourite> getData() async {
+    Favourite favourite =  Favourite(
+      _description,
+      _prediction,
+      _id,
+      _dateTaken,
+    );
+    favourite.localImagePath = _imagePath;
+    return favourite;
   }
 }
 
