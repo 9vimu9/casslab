@@ -37,4 +37,8 @@ class LoginFirebase {
   _loginSnackBar(String message) {
     showInSnackBar(message, title: "Authentication");
   }
+
+  Future<User?> getFireBaseUser() async {
+    return  await FirebaseAuth.instance.idTokenChanges().first;
+  }
 }

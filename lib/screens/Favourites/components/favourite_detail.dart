@@ -139,7 +139,6 @@ class _FavouriteDetailState extends State<FavouriteDetail> {
                 );
                 result.then((userDecision) async {
                   if (userDecision == favouritesRemove) {
-                    // await FavouriteService().removeSelectedByDateTaken(_dateTaken!);
                   }
                 });
               },

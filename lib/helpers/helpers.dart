@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'dart:io';
 import 'dart:math';
 
+import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:path_provider/path_provider.dart';
@@ -29,9 +30,7 @@ Future<String> getFilePathWithGeneratedFileName(
     filePath = directory.path;
   }
 
-  List<int> values =
-      List<int>.generate(10, (i) => Random.secure().nextInt(255));
-  String filePathWithExtension = filePath + base64UrlEncode(values);
+  String filePathWithExtension = filePath + generateRandomString(10);
 
   if (withUnixTime) {
     filePathWithExtension = filePathWithExtension +
@@ -39,5 +38,24 @@ Future<String> getFilePathWithGeneratedFileName(
         DateTime.now().millisecondsSinceEpoch.toString();
   }
 
-  return filePathWithExtension +"."+ extension;
+  return filePathWithExtension + "." + extension;
+}
+
+Future<bool> internetAvailable() async {
+
+  ConnectivityResult connectivityResult =
+      await (Connectivity().checkConnectivity());
+
+  if (connectivityResult == ConnectivityResult.mobile ||
+      connectivityResult == ConnectivityResult.wifi) {
+    return true;
+  }
+
+  return false;
+}
+
+String generateRandomString(int length) {
+  List<int> values =
+      List<int>.generate(length, (i) => Random.secure().nextInt(255));
+  return base64UrlEncode(values);
 }

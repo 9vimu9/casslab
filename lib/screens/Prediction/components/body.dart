@@ -1,6 +1,6 @@
 import 'dart:io';
 
-import 'package:casslab/actions/LocalStorage/favourite_service.dart';
+import 'package:casslab/actions/Favourites/favourites_repository.dart';
 import 'package:casslab/classifiers/classifier.dart';
 import 'package:casslab/components/add_to_favorites_dialog.dart';
 import 'package:casslab/components/rounded_button.dart';
@@ -29,6 +29,7 @@ class _BodyState extends State<Body> {
   bool _addedToFavourite = false;
   File? _image;
   late String _description;
+  late String _favouriteID;
   late String _output;
   final picker = ImagePicker();
   Classifier classifier;
@@ -206,7 +207,7 @@ class _BodyState extends State<Body> {
                         _description,
                         context,
                         _formKey,
-                        onSaveFavourite,
+                        onUpdateFavourite,
                         onCancelFavouriteDialog,
                       ).displayAddToFavoritesDialog();
                     },
@@ -260,9 +261,6 @@ class _BodyState extends State<Body> {
             onPressed: () async {
               if (_addedToFavourite) {
                 // remove from favourite list
-                // ask question before do that
-                await FavouriteService().removeSelectedByDateTaken(_dateTaken!);
-
                 var result = showDialog<String>(
                   context: context,
                   builder: (BuildContext context) => AlertDialog(
@@ -277,8 +275,10 @@ class _BodyState extends State<Body> {
                         child: const Text('No, Keep it'),
                       ),
                       TextButton(
-                        onPressed: () =>
-                            Navigator.pop(context, favouritesRemove),
+                        onPressed: () async {
+                          await FavouritesRepository().removeSelectedByFavouriteID(_favouriteID);
+                          Navigator.pop(context, favouritesRemove);
+                        },
                         child: const Text('Yes, Remove it'),
                       ),
                     ],
@@ -310,13 +310,27 @@ class _BodyState extends State<Body> {
     final dataFields = _formKey.currentState!.fields;
     var description = dataFields[favouritesDescriptionFieldName]!.value;
     description  = description ?? "";
+
+    String favouriteID = await FavouritesRepository().add(description, _output, _image!.path, _dateTaken!);
     setState(() {
       _description = description;
+      _favouriteID = favouriteID;
       _addedToFavourite = true;
       Navigator.pop(context);
     });
-    //added to local storage and firebase here
-    await FavouriteService().add(_description, _output, _image!.path, _dateTaken!);
+  }
+
+
+  Future<void> onUpdateFavourite() async {
+
+    var description = _formKey.currentState!.fields[favouritesDescriptionFieldName]!.value;
+    description  = description ?? "";
+
+    await FavouritesRepository().updateDescription(description, _favouriteID);
+    setState(() {
+      _description = description;
+      Navigator.pop(context);
+    });
   }
 
   void onCancelFavouriteDialog() {

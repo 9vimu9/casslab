@@ -1,19 +1,26 @@
 class FavouriteLocal{
 
-  final String _description;
+  String _description;
+
+  set description(String value) {
+    _description = value;
+  }
+
   final String _prediction;
   final String _imagePath;
+  final String _id;
   final int _dateTaken;
 
-  int get dateTaken => _dateTaken;
+  String get id => _id;
 
-  FavouriteLocal(this._description, this._prediction, this._imagePath, this._dateTaken);
+  FavouriteLocal(this._description, this._prediction, this._imagePath, this._dateTaken,this._id);
 
   FavouriteLocal.fromJson(Map<String, dynamic> json)
-      : _description = json['prediction'],
+      : _description = json['description'],
         _prediction = json['prediction'],
         _imagePath = json['image_path'],
-        _dateTaken = json['date_taken'];
+        _dateTaken = json['date_taken'],
+        _id = json['id'];
 
   Map<String, dynamic> toJson() {
     return {
@@ -21,6 +28,7 @@ class FavouriteLocal{
       'prediction': _prediction,
       'image_path': _imagePath,
       'date_taken': _dateTaken,
+      'id': _id,
     };
   }
 }
