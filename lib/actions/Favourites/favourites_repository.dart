@@ -15,16 +15,16 @@ class FavouritesRepository {
     bool internetIsAvailable = await internetAvailable();
     User? user = await LoginFirebase().getFireBaseUser();
 
-    if (!internetIsAvailable || user == null) {
-      await FavouriteLocalStorageRepository().add(
-        description,
-        prediction,
-        imagePath,
-        dateTaken,
-        favouriteID,
-      );
-    } else {
-      await FavouriteFirestoreRepository().add(
+    await FavouriteLocalStorageRepository().add(
+      description,
+      prediction,
+      imagePath,
+      dateTaken,
+      favouriteID,
+    );
+
+    if (internetIsAvailable && user != null) {
+      await FavouriteFirestoreRepository(user).add(
         description,
         prediction,
         imagePath,
@@ -40,10 +40,13 @@ class FavouritesRepository {
     bool internetIsAvailable = await internetAvailable();
     User? user = await LoginFirebase().getFireBaseUser();
 
-    if (!internetIsAvailable || user == null) {
-      FavouriteLocalStorageRepository().updateDescription(description, id);
-    } else {
-      FavouriteFirestoreRepository().updateDescription(description, id);
+    await FavouriteLocalStorageRepository().updateDescription(description, id);
+
+    if (internetIsAvailable && user != null) {
+      await FavouriteFirestoreRepository(user).updateDescription(
+        description,
+        id,
+      );
     }
   }
 
@@ -51,10 +54,9 @@ class FavouritesRepository {
     bool internetIsAvailable = await internetAvailable();
     User? user = await LoginFirebase().getFireBaseUser();
 
-    if (!internetIsAvailable || user == null) {
-      await FavouriteLocalStorageRepository().removeSelectedByFavouriteID(id);
-    } else {
-      FavouriteFirestoreRepository().removeSelectedByFavouriteID(id);
+    await FavouriteLocalStorageRepository().removeSelectedByFavouriteID(id);
+    if (internetIsAvailable && user != null) {
+      await FavouriteFirestoreRepository(user).removeSelectedByFavouriteID(id);
     }
   }
 }

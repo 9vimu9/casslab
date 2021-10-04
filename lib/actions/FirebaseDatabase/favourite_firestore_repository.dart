@@ -9,6 +9,10 @@ import 'package:firebase_auth/firebase_auth.dart';
 const key = "favourites";
 
 class FavouriteFirestoreRepository {
+
+  User user;
+  FavouriteFirestoreRepository(this.user);
+
   add(
     String description,
     String prediction,
@@ -16,10 +20,6 @@ class FavouriteFirestoreRepository {
     int dateTaken,
     String favouriteID,
   ) async {
-    User? user = await LoginFirebase().getFireBaseUser();
-    if (user == null) {
-      return;
-    }
 
     String? referenceImagePath = await AddImage(imagePath).action();
 
@@ -39,10 +39,6 @@ class FavouriteFirestoreRepository {
 
   removeSelectedByFavouriteID(String id) async {
     await syncData();
-    User? user = await LoginFirebase().getFireBaseUser();
-    if (user == null) {
-      return;
-    }
 
     CollectionReference favourites = FirebaseFirestore.instance.collection(key);
     QuerySnapshot<Object?> documents =
@@ -79,10 +75,6 @@ class FavouriteFirestoreRepository {
 
   Future<void> updateDescription(String description, String id) async {
     await syncData();
-    User? user = await LoginFirebase().getFireBaseUser();
-    if (user == null) {
-      return;
-    }
 
     CollectionReference favourites = FirebaseFirestore.instance.collection(key);
     QuerySnapshot<Object?> documents =
@@ -96,10 +88,6 @@ class FavouriteFirestoreRepository {
   }
 
   syncData() async {
-    User? user = await LoginFirebase().getFireBaseUser();
-    if (user == null) {
-      return;
-    }
 
     List<FavouriteLocal> localFavourites =
         await FavouriteLocalStorageRepository().all();
