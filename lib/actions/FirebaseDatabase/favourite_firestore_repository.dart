@@ -1,6 +1,8 @@
+import 'package:casslab/Model/favourite_local.dart';
 import 'package:casslab/actions/Authentication/login_firebase.dart';
 import 'package:casslab/actions/FirebaseStorage/add_image.dart';
 import 'package:casslab/actions/FirebaseStorage/remove_image.dart';
+import 'package:casslab/actions/LocalStorage/favourite_local_storage_repository.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
@@ -13,27 +15,30 @@ class FavouriteFirestoreRepository {
     String imagePath,
     int dateTaken,
     String favouriteID,
-  ) {
-    LoginFirebase().checkUserIsLoggedIn().first.then((user) async {
-      CollectionReference favourites =
-          FirebaseFirestore.instance.collection(key);
-      String? referenceImagePath = await AddImage(imagePath).action();
+  ) async {
+    User? user = await LoginFirebase().getFireBaseUser();
+    if (user == null) {
+      return;
+    }
 
-      await favourites
-          .add({
-            'prediction': prediction,
-            'description': description,
-            'date_taken': dateTaken,
-            'user_id': user!.uid,
-            'reference_image_path': referenceImagePath,
-            'id': favouriteID,
-          })
-          .then((value) => print("User Added"))
-          .catchError((error) => print("Failed to add user: $error"));
-    });
+    String? referenceImagePath = await AddImage(imagePath).action();
+
+    await FirebaseFirestore.instance.collection(key).add({
+      'prediction': prediction,
+      'description': description,
+      'date_taken': dateTaken,
+      'user_id': user.uid,
+      'reference_image_path': referenceImagePath,
+      'local_image_path': imagePath,
+      'id': favouriteID,
+    }).then((value) {
+      print("User Added");
+      syncData();
+    }).catchError((error) => print("Failed to add user: $error"));
   }
 
   removeSelectedByFavouriteID(String id) async {
+    await syncData();
     User? user = await LoginFirebase().getFireBaseUser();
     if (user == null) {
       return;
@@ -53,7 +58,27 @@ class FavouriteFirestoreRepository {
     });
   }
 
+  Future<QueryDocumentSnapshot<Object?>?> find(String id) async {
+    User? user = await LoginFirebase().getFireBaseUser();
+    if (user == null) {
+      return null;
+    }
+
+    CollectionReference favourites = FirebaseFirestore.instance.collection(key);
+    QuerySnapshot<Object?> querySnapshot =
+        await favourites.where("id", isEqualTo: id).get();
+    List<QueryDocumentSnapshot<Object?>> queryDocumentSnapshots =
+        querySnapshot.docs;
+
+    if (queryDocumentSnapshots.isEmpty) {
+      return null;
+    }
+
+    return queryDocumentSnapshots[0];
+  }
+
   Future<void> updateDescription(String description, String id) async {
+    await syncData();
     User? user = await LoginFirebase().getFireBaseUser();
     if (user == null) {
       return;
@@ -68,5 +93,28 @@ class FavouriteFirestoreRepository {
         print("favourite updated");
       }).catchError((error) => print("Failed to update favourite: $error"));
     });
+  }
+
+  syncData() async {
+    User? user = await LoginFirebase().getFireBaseUser();
+    if (user == null) {
+      return;
+    }
+
+    List<FavouriteLocal> localFavourites =
+        await FavouriteLocalStorageRepository().all();
+    for (FavouriteLocal localFavourite in localFavourites) {
+      QueryDocumentSnapshot<Object?>? queryDocumentSnapshot =
+          await find(localFavourite.id);
+      if (queryDocumentSnapshot == null) {
+        add(
+          localFavourite.description,
+          localFavourite.prediction,
+          localFavourite.imagePath,
+          localFavourite.dateTaken,
+          localFavourite.id,
+        );
+      }
+    }
   }
 }

@@ -16,11 +16,21 @@ class FavouritesRepository {
     User? user = await LoginFirebase().getFireBaseUser();
 
     if (!internetIsAvailable || user == null) {
-      await FavouriteLocalStorageRepository()
-          .add(description, prediction, imagePath, dateTaken, favouriteID);
+      await FavouriteLocalStorageRepository().add(
+        description,
+        prediction,
+        imagePath,
+        dateTaken,
+        favouriteID,
+      );
     } else {
-      FavouriteFirestoreRepository()
-          .add(description, prediction, imagePath, dateTaken, favouriteID);
+      await FavouriteFirestoreRepository().add(
+        description,
+        prediction,
+        imagePath,
+        dateTaken,
+        favouriteID,
+      );
     }
 
     return favouriteID;

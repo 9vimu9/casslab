@@ -8,7 +8,7 @@ import 'local_storage_service.dart';
 const key = "favourites";
 
 class FavouriteLocalStorageRepository extends LocalStorageService {
-  Future<List<FavouriteLocal>> get() async {
+  Future<List<FavouriteLocal>> all() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     List<String> favourites = prefs.getStringList(key) ?? [];
     List<FavouriteLocal> localFavourites = [];
