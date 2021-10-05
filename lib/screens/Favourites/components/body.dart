@@ -1,9 +1,13 @@
+import 'package:casslab/Model/favourite.dart';
 import 'package:casslab/screens/Favourites/components/background.dart';
 import 'package:casslab/screens/Favourites/components/favourite_detail.dart';
 import 'package:flutter/material.dart';
 
 class Body extends StatelessWidget {
-  Body({
+  List<Favourite> favourites;
+
+  Body(
+    this.favourites, {
     Key? key,
   }) : super(key: key);
 
@@ -12,13 +16,11 @@ class Body extends StatelessWidget {
     return Background(
       child: Container(
         padding: const EdgeInsets.only(top: 40),
-        child: ListView(
-          children: [
-            FavouriteDetail(),
-            FavouriteDetail(),
-            FavouriteDetail(),
-            FavouriteDetail(),
-          ],
+        child: ListView.builder(
+          itemBuilder: (BuildContext context, int index) {
+            return FavouriteDetail(favourites[index]);
+          },
+          itemCount: favourites.length,
         ),
       ), // removing background
     );

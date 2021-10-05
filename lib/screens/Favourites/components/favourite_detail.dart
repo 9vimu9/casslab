@@ -1,16 +1,36 @@
 import 'dart:io';
 
+import 'package:casslab/Model/favourite.dart';
 import 'package:casslab/constants.dart';
 import 'package:flutter/material.dart';
 
 class FavouriteDetail extends StatefulWidget {
+  Favourite favourite;
+  FavouriteDetail(this.favourite, {Key? key}) : super(key: key);
+
   @override
-  _FavouriteDetailState createState() => _FavouriteDetailState();
+  _FavouriteDetailState createState() => _FavouriteDetailState(favourite);
 }
 
 class _FavouriteDetailState extends State<FavouriteDetail> {
   Size? size;
+  Favourite favourite;
+  _FavouriteDetailState(this.favourite);
 
+  late String _description;
+  late String _prediction;
+  late String _id;
+  late String _dateTaken;
+
+  @override
+  void initState() {
+
+    _description = favourite.description;
+    _prediction = favourite.prediction;
+    _id = favourite.id;
+    _dateTaken = DateTime.fromMillisecondsSinceEpoch(favourite.dateTaken).toString();
+    super.initState();
+  }
   @override
   Widget build(BuildContext context) {
     size = MediaQuery.of(context).size;
@@ -39,8 +59,7 @@ class _FavouriteDetailState extends State<FavouriteDetail> {
           SizedBox(
             width: size!.width * 0.8,
             child: Container(
-                child: Text(
-              'description here description here description heredescription heredescription heredescription here description here description here description heredescription heredescription heredescription here',
+                child: Text(_description ,
               textAlign: TextAlign.left,
               style: const TextStyle(
                   color: Colors.black,
@@ -65,7 +84,7 @@ class _FavouriteDetailState extends State<FavouriteDetail> {
           SizedBox(
             width: size!.width * 0.9,
             child: Text(
-              'Date Taken: 2021-12-13 08:51:23 am',
+              'Date Taken: $_dateTaken',
               textAlign: TextAlign.left,
               style: const TextStyle(
                   color: Colors.black,
@@ -88,11 +107,8 @@ class _FavouriteDetailState extends State<FavouriteDetail> {
           minWidth: 0.0,
           minHeight: 0.0,
           maxWidth: double.infinity,
-          child: Image.file(
-            File(
-                "/data/user/0/com.casslab.casslab/app_flutterGRbLkYhFc-3wjQ==_1633290027119.jpg"),
-            fit: BoxFit.cover,
-          )),
+          child: _getImagePreview()
+      ),
     );
   }
 
@@ -103,7 +119,7 @@ class _FavouriteDetailState extends State<FavouriteDetail> {
         SizedBox(
           width: size!.width * 0.6,
           child: Text(
-            "prediction",
+            _prediction ,
             textAlign: TextAlign.left,
             style: const TextStyle(
                 color: Colors.black, fontSize: 35, fontWeight: FontWeight.w600),
@@ -146,5 +162,19 @@ class _FavouriteDetailState extends State<FavouriteDetail> {
         SizedBox(width: size!.width * 0.05),
       ],
     ),padding: EdgeInsets.only(top: 0),);
+  }
+
+  Image _getImagePreview(){
+
+    if(favourite.imageType == ImageTypes.localStorage){
+      return Image.file(
+        //to do set default image if image not available
+        File(favourite.imagePath!),
+        fit: BoxFit.cover,
+      );
+    }else{
+      return Image.network(favourite.imagePath!,fit: BoxFit.cover,);
+    }
+
   }
 }

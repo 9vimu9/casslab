@@ -1,12 +1,8 @@
 import 'package:casslab/Model/favourite.dart';
 
 class FavouriteLocal {
+
   String _description;
-
-  set description(String value) {
-    _description = value;
-  }
-
   final String _prediction;
   final String _imagePath;
   final String _id;
@@ -22,8 +18,17 @@ class FavouriteLocal {
 
   String get imagePath => _imagePath;
 
-  FavouriteLocal(this._description, this._prediction, this._imagePath,
-      this._dateTaken, this._id);
+  set description(String value) {
+    _description = value;
+  }
+
+  FavouriteLocal(
+    this._description,
+    this._prediction,
+    this._imagePath,
+    this._dateTaken,
+    this._id,
+  );
 
   FavouriteLocal.fromJson(Map<String, dynamic> json)
       : _description = json['description'],
@@ -48,23 +53,9 @@ class FavouriteLocal {
       _prediction,
       _id,
       _dateTaken,
+      _imagePath,
     );
-    favourite.localImagePath = _imagePath;
+    favourite.imageType = ImageTypes.localStorage;
     return favourite;
   }
 }
-
-/*
-* JSON → object
-String rawJson = '{"name":"Mary","age":30}';
-Map<String, dynamic> map = jsonDecode(rawJson);
-Person person = Person.fromJson(map);
-* */
-
-/*
-* Object → JSON
-Person person = Person('Mary', 30);
-Map<String, dynamic> map = person.toJson();
-String rawJson = jsonEncode(map);
-*
-* */

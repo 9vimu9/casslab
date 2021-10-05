@@ -1,3 +1,6 @@
+import 'package:casslab/Model/favourite.dart';
+import 'package:casslab/Model/favourite_firebase.dart';
+import 'package:casslab/Model/favourite_local.dart';
 import 'package:casslab/actions/Authentication/login_firebase.dart';
 import 'package:casslab/actions/FirebaseDatabase/favourite_firestore_repository.dart';
 import 'package:casslab/actions/LocalStorage/favourite_local_storage_repository.dart';
@@ -60,13 +63,27 @@ class FavouritesRepository {
     }
   }
 
-  all() async {
+  Future<List<Favourite>> all() async {
     bool internetIsAvailable = await internetAvailable();
     User? user = await LoginFirebase().getFireBaseUser();
 
-    await FavouriteLocalStorageRepository().all();
+    List<Favourite> favourites = [];
+
     if (internetIsAvailable && user != null) {
-      await FavouriteFirestoreRepository(user).all();
+      List<FavouriteFirebase> firebaseFavourites =  await FavouriteFirestoreRepository(user).all();
+      for(FavouriteFirebase firebaseFavourite in firebaseFavourites){
+        Favourite favourite = await firebaseFavourite.getData();
+        favourites.add(favourite);
+      }
+    }else{
+      List<FavouriteLocal> localFavourites = await FavouriteLocalStorageRepository().all();
+
+      for(FavouriteLocal localFavourite in localFavourites){
+        Favourite favourite = await localFavourite.getData();
+        favourites.add(favourite);
+      }
     }
+
+    return favourites;
   }
 }

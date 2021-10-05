@@ -4,7 +4,6 @@ import 'package:casslab/actions/FirebaseStorage/get_image_url.dart';
 class FavouriteFirebase {
   String _description;
   final String _prediction;
-  final String _imagePath;
   final String _localImagePath;
   final String _referenceImagePath;
   final String _id;
@@ -14,7 +13,6 @@ class FavouriteFirebase {
   FavouriteFirebase(
     this._description,
     this._prediction,
-    this._imagePath,
     this._localImagePath,
     this._referenceImagePath,
     this._id,
@@ -36,20 +34,21 @@ class FavouriteFirebase {
 
   String get localImagePath => _localImagePath;
 
-  String get imagePath => _imagePath;
 
   set description(String value) {
     _description = value;
   }
 
   Future<Favourite> getData() async {
+    String? imagePath = await GetImageURL(_referenceImagePath).action();
     Favourite favourite =  Favourite(
       _description,
       _prediction,
       _id,
       _dateTaken,
+      imagePath
     );
-    favourite.urlImagePath = await GetImageURL(_referenceImagePath).action();
+    favourite.imageType = ImageTypes.firebaseStorage;
     return favourite;
   }
 }

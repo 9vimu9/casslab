@@ -121,7 +121,6 @@ class FavouriteFirestoreRepository {
       FavouriteFirebase firebaseFavourite = FavouriteFirebase(
         queryDocumentSnapshot["description"],
         queryDocumentSnapshot["prediction"],
-        queryDocumentSnapshot["image_path"],
         queryDocumentSnapshot["local_image_path"],
         queryDocumentSnapshot["reference_image_path"],
         queryDocumentSnapshot["id"],

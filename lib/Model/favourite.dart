@@ -1,32 +1,37 @@
-class Favourite{
+enum ImageTypes {
+  localStorage,
+  firebaseStorage,
+}
 
+class Favourite {
   final String _description;
   final String _prediction;
   final String _id;
   final int _dateTaken;
+  final String? _imagePath;
+  ImageTypes? _imageType;
+
+  ImageTypes? get imageType => _imageType;
+
+  String? get imagePath => _imagePath;
 
   String get description => _description;
-  String? _localImagePath;
-  String? _urlImagePath;
-
-
-  Favourite(this._description, this._prediction, this._id, this._dateTaken);
 
   String get prediction => _prediction;
-
-  String? get urlImagePath => _urlImagePath;
-
-  String? get localImagePath => _localImagePath;
 
   int get dateTaken => _dateTaken;
 
   String get id => _id;
 
-  set urlImagePath(String? value) {
-    _urlImagePath = value;
+  set imageType(ImageTypes? value) {
+    _imageType = value;
   }
 
-  set localImagePath(String? value) {
-    _localImagePath = value;
-  }
+  Favourite(
+    this._description,
+    this._prediction,
+    this._id,
+    this._dateTaken,
+    this._imagePath,
+  );
 }
