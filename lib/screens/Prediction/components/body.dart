@@ -1,8 +1,10 @@
 import 'dart:io';
 
+import 'package:casslab/Model/favourite.dart';
 import 'package:casslab/actions/Favourites/favourites_repository.dart';
 import 'package:casslab/classifiers/classifier.dart';
 import 'package:casslab/components/add_to_favorites_dialog.dart';
+import 'package:casslab/components/loader.dart';
 import 'package:casslab/components/rounded_button.dart';
 import 'package:casslab/components/top_button_bar.dart';
 import 'package:casslab/constants.dart';
@@ -52,30 +54,33 @@ class _BodyState extends State<Body> {
   }
 
   classifyImage(File? image) async {
-    String output = await classifier.classifyImage(image);
-    setState(() {
-      _output = output;
-      _noImageSelected = false;
-      _description = "";
-      _addedToFavourite = false;
-      _dateTaken = getUnixTimeStampInMillis();
-    });
+
   }
 
   getImageFrom(ImageSource imageSource) async {
+    Loader().showLoader(context);
     XFile? image = await picker.pickImage(source: imageSource);
-    if (image == null) return null;
+    if (image == null) {
+      Navigator.pop(context);
+      return;
+    }
     String newFilePath = await getFilePathWithGeneratedFileName(
       "jpg",
       withUnixTime: true,
     );
     print("***************** file path ********************");
     print(newFilePath);
-    File(image.path).copy(newFilePath).then((savedImage) {
-      setState(() {
-        _image = savedImage;
-      });
-      classifyImage(_image);
+
+    File savedImage = await File(image.path).copy(newFilePath);
+    String output = await classifier.classifyImage(savedImage);
+    Navigator.pop(context);
+    setState(() {
+      _image = savedImage;
+      _output = output;
+      _noImageSelected = false;
+      _description = "";
+      _addedToFavourite = false;
+      _dateTaken = getUnixTimeStampInMillis();
     });
   }
 
@@ -144,12 +149,17 @@ class _BodyState extends State<Body> {
             text: "My Favourites",
             color: kPrimaryLightColor,
             textColor: Colors.black,
-            press: () {
+            press: () async {
+
+              Loader().showLoader(context);
+              List<Favourite> favourites = await FavouritesRepository().all();
+              Navigator.pop(context);
+
               Navigator.push(
                 context,
                 MaterialPageRoute(
                   builder: (context) {
-                    return FavouritesScreen();
+                    return FavouritesScreen(favourites);
                   },
                 ),
               );
@@ -291,7 +301,9 @@ class _BodyState extends State<Body> {
                       ),
                       TextButton(
                         onPressed: () async {
+                          Loader().showLoader(context);
                           await FavouritesRepository().removeSelectedByFavouriteID(_favouriteID);
+                          Navigator.pop(context);
                           Navigator.pop(context, favouritesRemove);
                         },
                         child: const Text('Yes, Remove it'),
@@ -326,7 +338,9 @@ class _BodyState extends State<Body> {
     var description = dataFields[favouritesDescriptionFieldName]!.value;
     description  = description ?? "";
 
+    Loader().showLoader(context);
     String favouriteID = await FavouritesRepository().add(description, _output, _image!.path, _dateTaken!);
+    Navigator.pop(context);
     setState(() {
       _description = description;
       _favouriteID = favouriteID;
@@ -341,7 +355,9 @@ class _BodyState extends State<Body> {
     var description = _formKey.currentState!.fields[favouritesDescriptionFieldName]!.value;
     description  = description ?? "";
 
+    Loader().showLoader(context);
     await FavouritesRepository().updateDescription(description, _favouriteID);
+    Navigator.pop(context);
     setState(() {
       _description = description;
       Navigator.pop(context);

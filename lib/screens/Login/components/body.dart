@@ -1,5 +1,7 @@
 import 'package:casslab/actions/Authentication/login_firebase.dart';
+import 'package:casslab/actions/Syncing/sync_favourites.dart';
 import 'package:casslab/components/already_have_an_account_acheck.dart';
+import 'package:casslab/components/loader.dart';
 import 'package:casslab/components/rounded_button.dart';
 import 'package:casslab/components/rounded_input_field.dart';
 import 'package:casslab/components/rounded_password_field.dart';
@@ -9,6 +11,7 @@ import 'package:casslab/screens/Signup/signup_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:get/get.dart';
 
 class Body extends StatefulWidget {
   const Body({

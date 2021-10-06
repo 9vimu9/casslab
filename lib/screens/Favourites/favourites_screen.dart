@@ -5,22 +5,15 @@ import 'package:flutter/material.dart';
 
 class FavouritesScreen extends StatelessWidget {
 
-  FavouritesScreen({Key? key}) : super(key: key);
-
-  Future<List<Favourite>> favourites = FavouritesRepository().all();
+  List<Favourite> favourites;
+  FavouritesScreen(this.favourites,{Key? key}) : super(key: key);
 
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: SafeArea(
-        child: FutureBuilder(
-          future: favourites,
-          builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
-            List<Favourite> favourites = snapshot.data ?? [];
-            return Body(favourites);
-          },
-        ),
+        child: Body(favourites),
       ),
     );
   }
