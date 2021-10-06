@@ -1,8 +1,6 @@
 import 'package:casslab/Model/favourite_firebase.dart';
-import 'package:casslab/Model/favourite_local.dart';
 import 'package:casslab/actions/FirebaseStorage/add_image.dart';
 import 'package:casslab/actions/FirebaseStorage/remove_image.dart';
-import 'package:casslab/actions/LocalStorage/favourite_local_storage_repository.dart';
 import 'package:casslab/helpers/helpers.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -39,7 +37,6 @@ class FavouriteFirestoreRepository {
   }
 
   removeSelectedByFavouriteID(String id) async {
-    // await syncData();
 
     CollectionReference favourites = FirebaseFirestore.instance.collection(key);
     QuerySnapshot<Object?> documents =
@@ -70,7 +67,6 @@ class FavouriteFirestoreRepository {
   }
 
   Future<void> updateDescription(String description, String id) async {
-    // await syncData();
 
     CollectionReference favourites = FirebaseFirestore.instance.collection(key);
     QuerySnapshot<Object?> documents =
@@ -87,26 +83,7 @@ class FavouriteFirestoreRepository {
     });
   }
 
-  syncData() async {
-    List<FavouriteLocal> localFavourites =
-        await FavouriteLocalStorageRepository().all();
-    for (FavouriteLocal localFavourite in localFavourites) {
-      QueryDocumentSnapshot<Object?>? queryDocumentSnapshot =
-          await find(localFavourite.id);
-      if (queryDocumentSnapshot == null) {
-        add(
-          localFavourite.description,
-          localFavourite.prediction,
-          localFavourite.imagePath,
-          localFavourite.dateTaken,
-          localFavourite.id,
-        );
-      }
-    }
-  }
-
   Future<List<FavouriteFirebase>> all() async {
-    // await syncData();
 
     CollectionReference favourites = FirebaseFirestore.instance.collection(key);
     QuerySnapshot<Object?> querySnapshot = await favourites.where("user_id", isEqualTo: user.uid).get();

@@ -2,7 +2,9 @@ import 'dart:convert';
 import 'dart:io';
 import 'dart:math';
 
+import 'package:casslab/actions/Authentication/login_firebase.dart';
 import 'package:connectivity_plus/connectivity_plus.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:path_provider/path_provider.dart';
@@ -55,4 +57,14 @@ String generateRandomString(int length) {
 
 int getUnixTimeStampInMillis(){
   return DateTime.now().toUtc().millisecondsSinceEpoch;
+}
+Future<User?> readyForUserSyncing() async {
+
+  bool internetIsAvailable = await internetAvailable();
+  User? user = await LoginFirebase().getFireBaseUser();
+
+  if(internetIsAvailable && user != null){
+    return user;
+  }
+  return null;
 }

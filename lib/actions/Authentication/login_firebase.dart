@@ -1,3 +1,4 @@
+import 'package:casslab/actions/Syncing/sync_favourites.dart';
 import 'package:casslab/helpers/helpers.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
@@ -8,6 +9,8 @@ class LoginFirebase {
         email: email.trim(),
         password: password,
       );
+      await SyncFavourites().startSyncing();
+
       return true;
     } on FirebaseAuthException catch (e) {
       String message = e.code;

@@ -67,6 +67,18 @@ class FavouriteLocalStorageRepository extends LocalStorageService {
     await prefs.setStringList(key, newLocalFavourites);
   }
 
+
+  Future<FavouriteLocal?> find(String id) async {
+    List<String> rawFavourites = (await SharedPreferences.getInstance()).getStringList(key) ?? [];
+    for (String rawFavourite in rawFavourites) {
+      FavouriteLocal favouriteLocal = FavouriteLocal.fromJson(jsonDecode(rawFavourite));
+      if (favouriteLocal.id == id) {
+        return favouriteLocal;
+      }
+    }
+    return null;
+  }
+
   Future<void> updateDescription(String description, String id) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     List<String> rawFavourites = prefs.getStringList(key) ?? [];

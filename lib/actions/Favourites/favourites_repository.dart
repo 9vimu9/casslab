@@ -1,9 +1,8 @@
 import 'package:casslab/Model/favourite.dart';
-import 'package:casslab/Model/favourite_firebase.dart';
 import 'package:casslab/Model/favourite_local.dart';
-import 'package:casslab/actions/Authentication/login_firebase.dart';
 import 'package:casslab/actions/FirebaseDatabase/favourite_firestore_repository.dart';
 import 'package:casslab/actions/LocalStorage/favourite_local_storage_repository.dart';
+import 'package:casslab/actions/Syncing/sync_favourites.dart';
 import 'package:casslab/helpers/helpers.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
@@ -15,8 +14,6 @@ class FavouritesRepository {
     int dateTaken,
   ) async {
     String favouriteID = generateRandomString(20);
-    bool internetIsAvailable = await internetAvailable();
-    User? user = await LoginFirebase().getFireBaseUser();
 
     await FavouriteLocalStorageRepository().add(
       description,
@@ -26,7 +23,8 @@ class FavouritesRepository {
       favouriteID,
     );
 
-    if (internetIsAvailable && user != null) {
+    User? user = await readyForUserSyncing();
+    if ( user != null) {
       await FavouriteFirestoreRepository(user).add(
         description,
         prediction,
@@ -40,12 +38,10 @@ class FavouritesRepository {
   }
 
   updateDescription(String description, String id) async {
-    bool internetIsAvailable = await internetAvailable();
-    User? user = await LoginFirebase().getFireBaseUser();
-
     await FavouriteLocalStorageRepository().updateDescription(description, id);
 
-    if (internetIsAvailable && user != null) {
+    User? user = await readyForUserSyncing();
+    if (user != null) {
       await FavouriteFirestoreRepository(user).updateDescription(
         description,
         id,
@@ -54,45 +50,27 @@ class FavouritesRepository {
   }
 
   removeSelectedByFavouriteID(String id) async {
-    bool internetIsAvailable = await internetAvailable();
-    User? user = await LoginFirebase().getFireBaseUser();
-
     await FavouriteLocalStorageRepository().removeSelectedByFavouriteID(id);
-    if (internetIsAvailable && user != null) {
+
+    User? user = await readyForUserSyncing();
+    if (user != null) {
       await FavouriteFirestoreRepository(user).removeSelectedByFavouriteID(id);
     }
   }
 
   Future<List<Favourite>> all() async {
-    bool internetIsAvailable = await internetAvailable();
-    User? user = await LoginFirebase().getFireBaseUser();
-
+    await SyncFavourites().startSyncing();
+    List<FavouriteLocal> localFavourites = await FavouriteLocalStorageRepository().all();
     List<Favourite> favourites = [];
-
-    if (internetIsAvailable && user != null) {
-      List<FavouriteFirebase> firebaseFavourites =  await FavouriteFirestoreRepository(user).all();
-      for(FavouriteFirebase firebaseFavourite in firebaseFavourites){
-        Favourite favourite = await firebaseFavourite.getData();
-        favourites.add(favourite);
-      }
-    }else{
-      List<FavouriteLocal> localFavourites = await FavouriteLocalStorageRepository().all();
-
-      for(FavouriteLocal localFavourite in localFavourites){
-        Favourite favourite = await localFavourite.getData();
-        favourites.add(favourite);
-      }
+    for (FavouriteLocal localFavourite in localFavourites) {
+      Favourite favourite = await localFavourite.getData();
+      favourites.add(favourite);
     }
-
     return favourites;
   }
 
   removeAll() async {
-    bool internetIsAvailable = await internetAvailable();
-    User? user = await LoginFirebase().getFireBaseUser();
-    if (internetIsAvailable && user != null) {
-      await FavouriteFirestoreRepository(user).syncData();
-    }
+    await SyncFavourites().startSyncing();
     await FavouriteLocalStorageRepository().removeAll();
   }
 }
