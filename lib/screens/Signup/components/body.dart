@@ -33,8 +33,8 @@ class BodyState extends State<Body> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
             SizedBox(height: size.height * 0.03),
-            SvgPicture.asset(
-              "assets/icons/signup.svg",
+            Image.asset(
+              "assets/icons/signup.png",
               height: size.height * 0.35,
             ),
             RoundedInputField(

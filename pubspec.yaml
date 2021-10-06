@@ -98,7 +98,9 @@ flutter:
    - assets/icons/facebook.svg
    - assets/icons/google-plus.svg
    - assets/icons/login.svg
+   - assets/icons/login.png
    - assets/icons/signup.svg
+   - assets/icons/signup.png
    - assets/icons/twitter.svg
    - assets/icons/casslab_min_space.png
 

@@ -8,7 +8,6 @@ import 'package:casslab/components/top_button_bar.dart';
 import 'package:casslab/constants.dart';
 import 'package:casslab/helpers/helpers.dart';
 import 'package:casslab/screens/Favourites/favourites_screen.dart';
-
 // import 'package:casslab/screens/Prediction/components/background.dart'; // removing background
 import 'package:flutter/material.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
@@ -166,7 +165,23 @@ class _BodyState extends State<Body> {
   Widget predictionWidget() {
     //show nothing if no picture selected
     if (_noImageSelected || _image == null) {
-      return Container();
+      return Center(
+        child: RichText(
+          text: const TextSpan(
+            children: [
+              TextSpan(
+                text: "Tap ",style: TextStyle(color: Colors.black,fontSize: 20),
+              ),
+              WidgetSpan(
+                child: Icon(Icons.camera_alt_sharp, size: 20),
+              ),
+              TextSpan(
+                text: " or 'Pick From Gallery' ",style: TextStyle(color: Colors.black,fontSize: 20),
+              ),
+            ],
+          ),
+        ),
+      );
     }
 
     return Center(
