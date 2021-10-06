@@ -84,24 +84,11 @@ flutter:
    - assets/models/model.tflite
    - assets/models/labels.txt
 
-   - assets/models/labels.txt
-   - assets/images/login_bottom.png
-   - assets/images/logo.png
-   - assets/images/main_bottom.png
-   - assets/images/main_top.png
-   - assets/images/signup_top.png
    - assets/images/splash_1000.png
    - assets/images/splash_1500.png
-   - assets/images/splash_500.png
-   - assets/icons/chat.svg
    - assets/icons/chat.png
-   - assets/icons/facebook.svg
-   - assets/icons/google-plus.svg
-   - assets/icons/login.svg
    - assets/icons/login.png
-   - assets/icons/signup.svg
    - assets/icons/signup.png
-   - assets/icons/twitter.svg
    - assets/icons/casslab_min_space.png
 
 
