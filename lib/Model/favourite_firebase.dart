@@ -9,6 +9,7 @@ class FavouriteFirebase {
   final String _id;
   final String _userId;
   final int _dateTaken;
+  final int _updatedAt;
 
   FavouriteFirebase(
     this._description,
@@ -18,6 +19,7 @@ class FavouriteFirebase {
     this._id,
     this._userId,
     this._dateTaken,
+    this._updatedAt,
   );
 
   String get description => _description;
@@ -25,6 +27,8 @@ class FavouriteFirebase {
   String get prediction => _prediction;
 
   int get dateTaken => _dateTaken;
+
+  int get updatedAt => _updatedAt;
 
   String get userId => _userId;
 

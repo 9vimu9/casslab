@@ -3,6 +3,7 @@ import 'package:casslab/Model/favourite_local.dart';
 import 'package:casslab/actions/FirebaseStorage/add_image.dart';
 import 'package:casslab/actions/FirebaseStorage/remove_image.dart';
 import 'package:casslab/actions/LocalStorage/favourite_local_storage_repository.dart';
+import 'package:casslab/helpers/helpers.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
@@ -26,6 +27,7 @@ class FavouriteFirestoreRepository {
       'prediction': prediction,
       'description': description,
       'date_taken': dateTaken,
+      'updated_at': getUnixTimeStampInMillis(),
       'user_id': user.uid,
       'reference_image_path': referenceImagePath,
       'local_image_path': imagePath,
@@ -75,7 +77,11 @@ class FavouriteFirestoreRepository {
         await favourites.where("id", isEqualTo: id).get();
 
     documents.docs.forEach((doc) {
-      favourites.doc(doc.id).update({'description': description}).then((value) {
+      Map<String, Object> updateData = {
+        'description': description,
+        'updated_at': getUnixTimeStampInMillis(),
+      };
+      favourites.doc(doc.id).update(updateData).then((value) {
         print("favourite updated");
       }).catchError((error) => print("Failed to update favourite: $error"));
     });
@@ -126,6 +132,7 @@ class FavouriteFirestoreRepository {
         queryDocumentSnapshot["id"],
         queryDocumentSnapshot["user_id"],
         queryDocumentSnapshot["date_taken"],
+        queryDocumentSnapshot["updated_at"],
       );
       firebaseFavourites.add(firebaseFavourite);
     }

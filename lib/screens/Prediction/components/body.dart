@@ -59,7 +59,7 @@ class _BodyState extends State<Body> {
       _noImageSelected = false;
       _description = "";
       _addedToFavourite = false;
-      _dateTaken = DateTime.now().toUtc().millisecondsSinceEpoch;
+      _dateTaken = getUnixTimeStampInMillis();
     });
   }
 

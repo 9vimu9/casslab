@@ -7,13 +7,6 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:path_provider/path_provider.dart';
 
-void logError(String code, String? message) {
-  if (message != null) {
-    print('Error: $code\nError Message: $message');
-  } else {
-    print('Error: $code');
-  }
-}
 
 void showInSnackBar(String message, {String title = "CassLab"}) {
   Get.snackbar(title, message,
@@ -35,7 +28,7 @@ Future<String> getFilePathWithGeneratedFileName(
   if (withUnixTime) {
     filePathWithExtension = filePathWithExtension +
         "_" +
-        DateTime.now().millisecondsSinceEpoch.toString();
+        getUnixTimeStampInMillis().toString();
   }
 
   return filePathWithExtension + "." + extension;
@@ -58,4 +51,8 @@ String generateRandomString(int length) {
   List<int> values =
       List<int>.generate(length, (i) => Random.secure().nextInt(255));
   return base64UrlEncode(values);
+}
+
+int getUnixTimeStampInMillis(){
+  return DateTime.now().toUtc().millisecondsSinceEpoch;
 }

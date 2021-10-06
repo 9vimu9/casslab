@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:casslab/Model/favourite_local.dart';
+import 'package:casslab/helpers/helpers.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'local_storage_service.dart';
@@ -34,6 +35,7 @@ class FavouriteLocalStorageRepository extends LocalStorageService {
       prediction,
       imagePath,
       dateTaken,
+      getUnixTimeStampInMillis(),
       id,
     );
     Map<String, dynamic> map = favouriteLocal.toJson();
@@ -75,6 +77,7 @@ class FavouriteLocalStorageRepository extends LocalStorageService {
           FavouriteLocal.fromJson(jsonDecode(rawFavourite));
       if (favouriteLocal.id == id) {
         favouriteLocal.description = description;
+        favouriteLocal.updatedAt = getUnixTimeStampInMillis();
       }
 
       print(jsonEncode(favouriteLocal.toJson()));
