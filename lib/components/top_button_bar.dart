@@ -1,4 +1,5 @@
 import 'package:casslab/actions/Authentication/login_firebase.dart';
+import 'package:casslab/actions/Favourites/favourites_repository.dart';
 import 'package:casslab/screens/Login/login_screen.dart';
 import 'package:casslab/screens/Welcome/welcome_screen.dart';
 import 'package:flutter/material.dart';
@@ -52,6 +53,7 @@ class TopButtonBar extends StatelessWidget {
                 child: TextButton(
                   onPressed: () {
                     LoginFirebase().signUserOut().then((value) {
+                      FavouritesRepository().removeAll();
                       Navigator.pushAndRemoveUntil<dynamic>(
                         context,
                         MaterialPageRoute<dynamic>(

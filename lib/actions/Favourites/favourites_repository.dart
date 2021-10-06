@@ -86,4 +86,13 @@ class FavouritesRepository {
 
     return favourites;
   }
+
+  removeAll() async {
+    bool internetIsAvailable = await internetAvailable();
+    User? user = await LoginFirebase().getFireBaseUser();
+    if (internetIsAvailable && user != null) {
+      await FavouriteFirestoreRepository(user).syncData();
+    }
+    await FavouriteLocalStorageRepository().removeAll();
+  }
 }

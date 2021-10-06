@@ -77,7 +77,7 @@ class _FavouriteDetailState extends State<FavouriteDetail> {
           ),
         ],
       ),
-      padding: const EdgeInsets.only(bottom: 50),
+      padding: const EdgeInsets.only(bottom: 80),
     );
   }
 
