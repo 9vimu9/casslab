@@ -32,12 +32,12 @@ class FavouriteFirestoreRepository {
       'id': favouriteID,
     }).then((value) {
       print("User Added");
-      syncData();
+      // syncData();
     }).catchError((error) => print("Failed to add user: $error"));
   }
 
   removeSelectedByFavouriteID(String id) async {
-    await syncData();
+    // await syncData();
 
     CollectionReference favourites = FirebaseFirestore.instance.collection(key);
     QuerySnapshot<Object?> documents =
@@ -68,7 +68,7 @@ class FavouriteFirestoreRepository {
   }
 
   Future<void> updateDescription(String description, String id) async {
-    await syncData();
+    // await syncData();
 
     CollectionReference favourites = FirebaseFirestore.instance.collection(key);
     QuerySnapshot<Object?> documents =
@@ -100,7 +100,7 @@ class FavouriteFirestoreRepository {
   }
 
   Future<List<FavouriteFirebase>> all() async {
-    await syncData();
+    // await syncData();
 
     CollectionReference favourites = FirebaseFirestore.instance.collection(key);
     QuerySnapshot<Object?> querySnapshot = await favourites.where("user_id", isEqualTo: user.uid).get();
