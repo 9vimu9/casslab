@@ -1,6 +1,8 @@
 import 'package:casslab/Model/favourite_firebase.dart';
 import 'package:casslab/Model/favourite_local.dart';
 import 'package:casslab/actions/FirebaseDatabase/favourite_firestore_repository.dart';
+import 'package:casslab/actions/FirebaseStorage/download_image.dart';
+import 'package:casslab/actions/FirebaseStorage/get_image_url.dart';
 import 'package:casslab/actions/LocalStorage/favourite_local_storage_repository.dart';
 import 'package:casslab/helpers/helpers.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -41,10 +43,14 @@ class SyncFavourites {
       FavouriteLocal? favouriteLocal = await FavouriteLocalStorageRepository().find(firebaseFavourite.id);
 
       if(favouriteLocal == null){
+
+        String? localFilePath = await _getLocalFilePathOfTheCloudImage(firebaseFavourite);
+        // ToDO : show template image if image is null
+
         await FavouriteLocalStorageRepository().add(
           firebaseFavourite.description,
           firebaseFavourite.prediction,
-          firebaseFavourite.localImagePath,
+          localFilePath!,
           firebaseFavourite.dateTaken,
           firebaseFavourite.id
         );
@@ -75,4 +81,30 @@ class SyncFavourites {
 
   }
 
+  Future<String?> _getLocalFilePathOfTheCloudImage(
+    FavouriteFirebase firebaseFavourite,
+  ) async {
+    String newFilePath = firebaseFavourite.localImagePath;
+    bool fileExist = await checkFileAvailable(newFilePath);
+
+    if (fileExist) {
+      return newFilePath;
+    }
+
+    String? imageURL =
+        await GetImageURL(firebaseFavourite.referenceImagePath).action();
+    if (imageURL == null) {
+      return null;
+    }
+    newFilePath = await getFilePathWithGeneratedFileName(
+      "jpg",
+      withUnixTime: true,
+    );
+    bool result = await DownloadImage().action(newFilePath, imageURL);
+
+    if (!result) {
+      return null;
+    }
+    return newFilePath;
+  }
 }

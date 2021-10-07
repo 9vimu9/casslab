@@ -25,7 +25,7 @@ Future<String> getFilePathWithGeneratedFileName(
     filePath = directory.path;
   }
 
-  String filePathWithExtension = filePath + generateRandomString(10);
+  String filePathWithExtension = filePath +"/"+ generateRandomString(10);
 
   if (withUnixTime) {
     filePathWithExtension = filePathWithExtension +
@@ -67,4 +67,8 @@ Future<User?> readyForUserSyncing() async {
     return user;
   }
   return null;
+}
+
+Future<bool> checkFileAvailable(String filePath) async {
+  return await File(filePath).exists();
 }
